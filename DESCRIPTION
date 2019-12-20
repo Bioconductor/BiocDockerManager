@@ -1,0 +1,19 @@
+Package: BiocDockerManager
+Type: Package
+Title: Manager for bioconductor docker images. 
+Version: 0.1.0
+Authors@R: person("Nitesh", "Turaga", email = "nitesh.turaga@roswellpark.org",
+                  role = c("aut", "cre"))
+Description: Templating engine and manager for the bioconductor docker
+    images on dockerhub. The package aims to update Dockerfiles uniformly
+    and make it easy for the maintainers on the Bioconductor Team. The vignette
+    also provides best practices for developers on how to inherit from these
+    docker images and build their own.
+Depends: R (>= 4.0)
+Imports: 
+    whisker
+VignetteBuilder: knitr
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
