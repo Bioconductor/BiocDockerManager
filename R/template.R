@@ -80,3 +80,29 @@ render_dockerfile <-
     writeLines(whisker.render(tmpl, payload), path)
 }
 
+
+#' Auto update master / release branches
+#'
+#' @examples
+#' update_repository("master", "~/Docuemnts/bioc/bioconductor_docker")
+#'
+#' update_repository("RELEASE_3_10", "~/Docuemnts/bioc/bioconductor_docker")
+#' 
+update_repository <-
+    function(branch, git_repo_path = "character(1)")
+{
+    owd <- setwd(git_repo_path)
+    on.exit(setwd(owd))
+
+    msg <- "Core team update to Dockerfile during release"
+    
+    ## Update master branch
+    git_checkout(branch = branch)
+    if (branch == "master")
+        render_dockerfile("devel", path = file.path(git_repo_path, "Dockerfile"))
+    else
+        ## Update release branch
+        render_dockerfile(branch, path = file.path(git_repo_path, "Dockerfile"))
+    git_commit(msg)
+    git push()    
+}
