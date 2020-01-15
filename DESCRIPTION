@@ -6,12 +6,12 @@ Authors@R:c(
     person(
         "Maintainer",
         email = "maintainer@bioconductor.org",
-        role = "aut", 
+        role = c("aut", "cre")
     ),
     person(
         "Nitesh", "Turaga",
         email = "Nitesh.Turaga@RoswellPark.org",
-        role = c("aut", "cre")
+        role = "aut"
    ))
 Description: Templating engine and manager for the bioconductor docker
     images on dockerhub. The package aims to update Dockerfiles

@@ -53,11 +53,16 @@
     function(organization = character(1))
 {
     org_pages <- .docker_get(sprintf("%s/?page_size=100",organization))
-    paste(
-        organization,
-        vapply(org_pages$results, `[[`, character(1), "name"),
-        sep="/"
-    )
+    vapply(org_pages$results, `[[`, character(1), "name")
+}
+
+.docker_repository_list <-
+    function(organization = character(1), images=NULL)
+{
+    if (is.null(images)) {
+        images = .docker_image_list(organization)
+    }
+    paste(organization, images, sep="/")
 }
 
 #' List the tags of an Image
@@ -74,7 +79,7 @@
 .docker_image_description <-
     function(image=character(1))
 {
-    .docker_get(image)$description
+    trimws(.docker_get(image)$description)
 }
 
 #' List available images with tags for Bioconductor
@@ -83,7 +88,7 @@
 #' 
 #' @export
 available <-
-    function(pattern = "")
+    function(pattern = "", version = BiocManager::version(), organization = "bioconductor")
 {
     ## Pattern validity check
     stopifnot(
@@ -94,15 +99,24 @@ available <-
 
     ## Get images
     bioc_images <- .docker_image_list("bioconductor")
+    bioc_images <- bioc_images[grep(pattern, bioc_images, value = FALSE, ignore.case = TRUE)]
+    bioc_repositories <- .docker_repository_list("bioconductor", bioc_images)
+
     ## Get descriptions
-    bioc_image_descriptions <- vapply(bioc_images, .docker_image_description, character(1))
+    ## TODO: grep here
+
+    bioc_image_descriptions <- vapply(bioc_repositories, .docker_image_description, character(1))
     ## get tags
-    bioc_image_tags <- sapply(bioc_images, .docker_image_tags_list)
+    bioc_image_tags <- lapply(bioc_repositories, .docker_image_tags_list)
+    bioc_image_string <- vapply(bioc_image_tags, paste, character(1), collapse=", ")
     ## TODO: Fix how to display tags
-    tbl <- tibble::tibble(Image = bioc_images,
-                             Description = bioc_image_descriptions,
-                             Tags = bioc_image_tags)
-    ## Only show images which are not in "pattern"
-    result <- tbl[grep(pattern, tbl$Image, value = FALSE, ignore.case = TRUE),]
-    result
+    tibble::tibble(Image = bioc_images,
+                   Description = bioc_image_descriptions,
+                   Tags = bioc_image_string,
+                   Repository = bioc_repositories,
+                   Tags_list = bioc_image_tags)
 }
+
+## TODO
+## installed()
+## pull()

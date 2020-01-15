@@ -45,10 +45,10 @@
     version = match.arg(version)
     
     ## TODO: The build_vars && symbols don't get read properly. Fix this.
-    build_vars <- readLines(
+    build_vars <- paste(readLines(
         system.file("extdata", "build_vars", package="BiocDockerManager"),
         encoding = "UTF-8"
-    )
+    ), collapse = "\n")
     
     ## Create payload
     payload <- list(
@@ -104,5 +104,5 @@ update_repository <-
         ## Update release branch
         render_dockerfile(branch, path = file.path(git_repo_path, "Dockerfile"))
     git_commit(msg)
-    git push()    
+    git_push()    
 }

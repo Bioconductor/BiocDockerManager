@@ -10,3 +10,6 @@
     invisible(err)
 }
 
+docker run -d
+
+

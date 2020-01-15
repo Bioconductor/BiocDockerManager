@@ -161,7 +161,7 @@ ADD install.R /tmp/
 
 RUN R -f /tmp/install.R
 
-{{devel_build_variables}}
+{{{devel_build_variables}}}
 
 # Init command for s6-overlay
 CMD ["/init"]
