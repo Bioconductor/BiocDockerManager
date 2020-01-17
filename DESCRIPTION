@@ -18,8 +18,14 @@ Description: Templating engine and manager for the bioconductor docker
     uniformly and make it easy for the maintainers on the Bioconductor
     Team. It also provides functions to see which images are available
     from Bioconductor.    
+Config/reticulate:
+  list(
+    packages = list(
+      list(package = "docker")
+    )
+  )
 Depends: R (>= 4.0)
-Imports: httr, whisker
+Imports: httr, whisker, reticulate
 VignetteBuilder: knitr
 License: MIT
 Encoding: UTF-8

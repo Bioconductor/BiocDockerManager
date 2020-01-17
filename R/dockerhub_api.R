@@ -116,9 +116,14 @@ available <-
     image_descriptions <- vapply(repositories,
                                  .docker_image_description,
                                  character(1))
-
+   ## TODO: DEPRECATE AND FILTER HERE
+    
     ## get tags in a list
     image_tags <- lapply(repositories, .docker_image_tags_list)
+
+    ## TODO: replace 0 length strings with NA (nzchar), make helper
+    ## function to make "Tags" clean and Description
+    
     tags_string <- vapply(image_tags, paste, character(1), collapse=", ")
 
     ## result
@@ -127,12 +132,8 @@ available <-
                    Tags = tags_string,
                    Repository = repositories,
                    Tags_list = image_tags)
-    if (deprecated) {
+    if (!deprecated) {
         tbl <- tbl[ !grepl("DEPRECATED", tbl$Description),]
     }
     tbl
 }
-
-## TODO
-## installed()
-## pull()

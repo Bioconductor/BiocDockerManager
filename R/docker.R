@@ -37,10 +37,22 @@ docker_pull <- function(name, tag,
 
 #' @export
 docker_installed <-
-    function(name, quiet = FALSE)
+    function(name = "", quiet = FALSE)
 {
     stopifnot(is.logical(quiet))
 
     cmd <- c("images", if (quiet) "--quiet", name)
     .docker_do(cmd)
 }
+
+## TODO :
+
+## valid() == valid
+## pull() == install
+## installed() == list
+## available()  == available
+## use_dockerfile() == template for users to get started to extend the bioconductor_docker image
+
+## BONUS :
+## run()
+## stop()
