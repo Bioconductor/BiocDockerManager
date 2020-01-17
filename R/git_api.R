@@ -12,7 +12,7 @@ o.git_do <- function(args) {
 #'
 #' @return `git_checkout()`: Exit status of `git checkout master`
 #'     invisbly.
-#'     
+#'
 git_checkout <- function(branch = "master") {
     stopifnot(
         is.character(branch), length(branch) == 1L, !is.na(branch),
