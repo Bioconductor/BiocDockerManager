@@ -56,6 +56,9 @@
     vapply(org_pages$results, `[[`, character(1), "name")
 }
 
+
+#' Get list of repositories, i.e, organization/image_name
+#'
 .docker_repository_list <-
     function(organization = character(1), images=NULL)
 {
@@ -64,6 +67,7 @@
     }
     paste(organization, images, sep="/")
 }
+
 
 #' List the tags of an Image
 .docker_image_tags_list <-
@@ -85,36 +89,48 @@
 #' List available images with tags for Bioconductor
 #'
 #' @importFrom tibble tibble
-#' 
+#'
 #' @export
 available <-
-    function(pattern = "", version = BiocManager::version(), organization = "bioconductor")
+    function(pattern = "", version = BiocManager::version(),
+             organization = "bioconductor", deprecated = FALSE)
 {
     ## Pattern validity check
     stopifnot(
         is.character(pattern),
         length(pattern) == 1L,
-        !is.na(pattern)
+        !is.na(pattern),
+        is.logical(deprecated)
     )
 
     ## Get images
-    bioc_images <- .docker_image_list("bioconductor")
-    bioc_images <- bioc_images[grep(pattern, bioc_images, value = FALSE, ignore.case = TRUE)]
-    bioc_repositories <- .docker_repository_list("bioconductor", bioc_images)
+    images <- .docker_image_list(organization)
+
+    images <- images[grep(pattern,
+                          images,
+                          value = FALSE, ignore.case = TRUE)]
+
+    repositories <- .docker_repository_list(organization, images)
 
     ## Get descriptions
-    ## TODO: grep here
+    image_descriptions <- vapply(repositories,
+                                 .docker_image_description,
+                                 character(1))
 
-    bioc_image_descriptions <- vapply(bioc_repositories, .docker_image_description, character(1))
-    ## get tags
-    bioc_image_tags <- lapply(bioc_repositories, .docker_image_tags_list)
-    bioc_image_string <- vapply(bioc_image_tags, paste, character(1), collapse=", ")
-    ## TODO: Fix how to display tags
-    tibble::tibble(Image = bioc_images,
-                   Description = bioc_image_descriptions,
-                   Tags = bioc_image_string,
-                   Repository = bioc_repositories,
-                   Tags_list = bioc_image_tags)
+    ## get tags in a list
+    image_tags <- lapply(repositories, .docker_image_tags_list)
+    tags_string <- vapply(image_tags, paste, character(1), collapse=", ")
+
+    ## result
+    tbl <- tibble::tibble(Image = images,
+                   Description = image_descriptions,
+                   Tags = tags_string,
+                   Repository = repositories,
+                   Tags_list = image_tags)
+    if (deprecated) {
+        tbl <- tbl[ !grepl("DEPRECATED", tbl$Description),]
+    }
+    tbl
 }
 
 ## TODO
