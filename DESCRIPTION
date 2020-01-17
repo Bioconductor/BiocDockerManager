@@ -1,23 +1,24 @@
 Package: BiocDockerManager
 Type: Package
-Title: Manager for bioconductor docker images. 
+Title: Access Bioconductor docker images
 Version: 0.1.0
 Authors@R:c(
     person(
-        "Maintainer",
-        email = "maintainer@bioconductor.org",
-        role = c("aut", "cre")
+	"Maintainer",
+	email = "maintainer@bioconductor.org",
+	role = c("aut", "cre")
     ),
     person(
-        "Nitesh", "Turaga",
-        email = "Nitesh.Turaga@RoswellPark.org",
-        role = "aut"
+	"Nitesh", "Turaga",
+	email = "Nitesh.Turaga@RoswellPark.org",
+	role = "aut"
    ))
-Description: Templating engine and manager for the bioconductor docker
-    images on dockerhub. The package aims to update Dockerfiles
-    uniformly and make it easy for the maintainers on the Bioconductor
-    Team. It also provides functions to see which images are available
-    from Bioconductor.    
+Description: Package works analogous to BiocManager but for docker
+	     images. Use the BiocDockerManager package to install and
+	     manage docker images provided by the Bioconductor
+	     project. A convenient tool to install images, update
+	     images and find which Bioconductor based docker images
+	     are available.
 Config/reticulate:
   list(
     packages = list(
@@ -27,7 +28,7 @@ Config/reticulate:
 Depends: R (>= 4.0)
 Imports: httr, whisker, reticulate
 VignetteBuilder: knitr
-License: MIT
+License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
