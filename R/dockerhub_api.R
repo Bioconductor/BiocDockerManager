@@ -139,6 +139,39 @@ available <-
 }
 
 
+#' Check if all images available are
+#'
+#'
+#' @export
+valid <-
+    function()
+{
+    return(NULL)
+}
+
+.docker_inspect <-
+    function()
+{
+    return(NULL)
+}
+
+version <-
+    function(name = "")
+{
+    ver <- integer(1)
+
+    return(ver)
+}
+
+###  python docker
+# docker = import("docker")
+#client = docker$from_env()
+#client$images$list()
+#image = client$images$list()[[1]]
+#image$labels
+#client$images$list(name="bioconductor/bioconductor_docker:devel")[[1]]$labels
+
+
 ## TODO
 
 ## valid()

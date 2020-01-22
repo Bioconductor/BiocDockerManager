@@ -18,15 +18,17 @@ Description: Package works analogous to BiocManager but for docker
 	     manage docker images provided by the Bioconductor
 	     project. A convenient tool to install images, update
 	     images and find which Bioconductor based docker images
-	     are available.
+	     are available. This package uses the python library - docker
+	     for a few functions.
 Config/reticulate:
   list(
     packages = list(
       list(package = "docker")
     )
   )
-Depends: R (>= 4.0)
-Imports: httr, whisker, reticulate
+Depends: R (>= 4.0), reticulate
+Imports: httr, whisker
+SystemRequirements: docker
 VignetteBuilder: knitr
 License: Artistic-2.0
 Encoding: UTF-8

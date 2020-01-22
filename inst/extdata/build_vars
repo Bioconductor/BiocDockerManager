@@ -1,4 +1,0 @@
-RUN curl -O https://raw.githubusercontent.com/Bioconductor/BBS/master/3.11/R_env_vars.sh \
-        && cat R_env_vars.sh | grep -o '^[^#]*' | sed 's/export //g' >>/etc/environment \
-        && cat R_env_vars.sh >> /root/.bashrc \
-        && rm -rf R_env_vars.sh

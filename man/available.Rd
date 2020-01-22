@@ -4,7 +4,12 @@
 \alias{available}
 \title{List available images with tags for Bioconductor}
 \usage{
-available(pattern = "")
+available(
+  pattern = "",
+  version = BiocManager::version(),
+  organization = "bioconductor",
+  deprecated = FALSE
+)
 }
 \description{
 List available images with tags for Bioconductor
