@@ -116,14 +116,14 @@ available <-
     image_descriptions <- vapply(repositories,
                                  .docker_image_description,
                                  character(1))
-   ## TODO: DEPRECATE AND FILTER HERE
-    
+    ## TODO: DEPRECATE AND FILTER HERE
+
     ## get tags in a list
     image_tags <- lapply(repositories, .docker_image_tags_list)
 
     ## TODO: replace 0 length strings with NA (nzchar), make helper
     ## function to make "Tags" clean and Description
-    
+
     tags_string <- vapply(image_tags, paste, character(1), collapse=", ")
 
     ## result
@@ -137,3 +137,15 @@ available <-
     }
     tbl
 }
+
+
+## TODO
+
+## valid()
+## install()
+## version()
+
+## bonus
+
+## run()
+## use_dockerfile()
