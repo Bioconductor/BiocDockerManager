@@ -2,7 +2,7 @@
 % Please edit documentation in R/dockerhub_api.R
 \name{.docker_get}
 \alias{.docker_get}
-\title{Build path for Dockerhub API query}
+\title{Build query for Dockerhub API}
 \usage{
 .docker_get(
   path,
@@ -10,6 +10,14 @@
   path_root = "/repositories/"
 )
 }
-\description{
-Build path for Dockerhub API query
+\arguments{
+\item{path}{`character(1)` query substring}
+
+\item{api}{`character(1)`, dockerhub api url}
+
+\item{path_root}{`character(1)` query substring}
 }
+\description{
+Build query for Dockerhub API
+}
+\keyword{internal}

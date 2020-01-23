@@ -27,7 +27,7 @@ Config/reticulate:
     )
   )
 Depends: R (>= 4.0), reticulate
-Imports: httr, whisker
+Imports: httr, whisker, readr
 SystemRequirements: docker
 VignetteBuilder: knitr
 License: Artistic-2.0

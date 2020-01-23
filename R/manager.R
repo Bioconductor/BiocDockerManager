@@ -1,4 +1,14 @@
-o#' List available images with tags for Bioconductor
+#' List available images with tags for Bioconductor
+#'
+#' @details 
+#'
+#' @param pattern
+#' @param version
+#' @param organization
+#' @param deprecated
+#' @return  
+#'
+#' @examples
 #'
 #' @importFrom tibble tibble
 #'
@@ -55,13 +65,14 @@ available <-
     tbl
 }
 
-
+#' Get version of bioconductor docker image
+#'
+#' @export
 version <-
-    function(name = "")
+    function(name = "bioconductor/bioconductor_docker", tag)
 {
-    ver <- integer(1)
-
-    return(ver)
+    labels <- .docker_inspect(name, tag)
+    labels$version
 }
 
 
@@ -69,7 +80,7 @@ version <-
 #' 
 #' @export
 install <-
-    function(name, tag, ...)
+    function(name, tag )
 {
     .docker_pull(name, tag, ...)
 }

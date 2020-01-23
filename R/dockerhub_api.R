@@ -2,6 +2,9 @@
 #'
 #' @keywords internal
 #' 
+#' @param `character(1)`, query for the api.
+#' @return reponse of the query to the dockerhub API.
+#' 
 #' @importFrom httr GET stop_for_status content
 .docker_get_query <-
     function(query)
@@ -16,9 +19,13 @@
 }
 
 
-#' Build path for Dockerhub API query
+#' Build query for Dockerhub API
 #'
 #' @keywords internal
+#' 
+#' @param path `character(1)` query substring
+#' @param api `character(1)`, dockerhub api url
+#' @param path_root `character(1)` query substring
 #' 
 .docker_get <-
     function(path, api = "https://hub.docker.com/v2",
@@ -34,12 +41,15 @@
 #' @keywords internal
 #' 
 #' @param `character(1)` docker image name with organization
-#'
-#' @examples
-#' .docker_image_pull_count("bioconductor/bioconductor_docker")
-#'
 #' @return `numeric(1)` number showing how many times the image has
 #'     been downloaded
+#' 
+#' @examples
+#' 
+#' \dontrun{
+#' .docker_image_pull_count("bioconductor/bioconductor_docker")
+#' }
+#' 
 .docker_image_pull_count <-
     function(image = character(1))
 {
@@ -107,9 +117,12 @@
 
 
 .docker_inspect <-
-    function()
+    function(name, tag)
 {
-    return(NULL)
+    docker <- import("docker")
+    client <- docker$from_env()
+    image <- client$images$get(paste(name,tag, sep=":"))
+    image$labels
 }
 
 

@@ -6,6 +6,13 @@
 \usage{
 .docker_get_query(query)
 }
+\arguments{
+\item{`character(1)`, }{query for the api.}
+}
+\value{
+reponse of the query to the dockerhub API.
+}
 \description{
 Dockerhub API get query
 }
+\keyword{internal}

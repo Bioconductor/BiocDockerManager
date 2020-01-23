@@ -17,6 +17,10 @@
 Get Docker image pull count (number of times downloaded)
 }
 \examples{
+
+\dontrun{
 .docker_image_pull_count("bioconductor/bioconductor_docker")
+}
 
 }
+\keyword{internal}
