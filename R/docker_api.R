@@ -1,16 +1,30 @@
-# Docker command line function to run with arguments
-.docker_do <- function(args) {
-    err <- system2("docker", args, wait = TRUE)
-    if (err)
+#' 
+.FUN <- function(cmd, args) {
+    tryCatch({
+        system2(cmd, args, stdout = TRUE, stderr = TRUE)
+    }, error = function(e) {
         stop(
-            "\n  ", sprintf("docker %s", paste(args, collapse=" ")),
-            "\n  failed: error code ", err
+            "'", cmd, " ",
+            paste(args, collapse = " "), "' failed. reason:",
+            "\n  ", conditionMessage(e)
         )
-    invisible(err)
+    }, warning = function(e) {
+        stop(
+            "'", cmd, " ",
+            paste(args, collapse = " "), "' failed. reason:",
+            "\n  ", conditionMessage(e)
+        )
+    })
 }
 
-#' Pull a docker image, see 'install()'
-#'
+
+## Docker command line function to run with arguments
+.docker_do <- function(args) {
+    .FUN("docker", args)
+}
+
+
+## Pull a docker image, see 'install()'
 .docker_pull <- function(name, tag = "latest",
                         quiet = FALSE, all_tags=FALSE)
 {
@@ -31,50 +45,22 @@
                  "--all-tags", name)
     }
 
-    ## Do the docker command
     .docker_do(cmd)
 }
 
 
-#' Install/Pull a docker image
-#' 
-#' @export
-install <-
-    function(name, tag, ...)
-{
-    .docker_pull(name, tag, ...)
-}
-
-
 #' List installed images/available on local machine
+#' @importFrom readr read_table
 .docker_images <-
     function(name = "", quiet = FALSE)
 {
     stopifnot(is.logical(quiet))
 
     cmd <- c("images", if (quiet) "--quiet", name)
-    .docker_do(cmd)
+    res <- .docker_do(cmd)
+    read_table(res)
 }
 
-
-#'
-#' @export
-installed <-
-    function(name = "", ...)
-{
-    .docker_images(name, ...)
-}
-
-
-#' Check if all images available are
-#'
-#'
-#' @export
-valid <-
-    function()
-{
-    
-}
 
 ## TODO :
 

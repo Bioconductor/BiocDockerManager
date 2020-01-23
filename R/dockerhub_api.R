@@ -1,16 +1,25 @@
 #' Dockerhub API get query
 #'
+#' @keywords internal
+#' 
 #' @importFrom httr GET stop_for_status content
 .docker_get_query <-
     function(query)
 {
     response <- GET(query)
-    stop_for_status(response)
+    tryCatch({
+        stop_for_status(response)
+    }, error = function(e) {
+        stop("That URL doesn't exist")
+    })
     content(response)
 }
 
+
 #' Build path for Dockerhub API query
 #'
+#' @keywords internal
+#' 
 .docker_get <-
     function(path, api = "https://hub.docker.com/v2",
              path_root = "/repositories/")
@@ -22,6 +31,8 @@
 
 #' Get Docker image pull count (number of times downloaded)
 #'
+#' @keywords internal
+#' 
 #' @param `character(1)` docker image name with organization
 #'
 #' @examples
@@ -41,6 +52,8 @@
 #'     username. Important to note that organization/username is
 #'     different from the image name on dockerhub.
 #'
+#' @keywords internal
+#' 
 #' @param `character(1)` name of organization or "username".
 #'
 #' @examples
@@ -59,6 +72,8 @@
 
 #' Get list of repositories, i.e, organization/image_name
 #'
+#' @keywords internal
+#' 
 .docker_repository_list <-
     function(organization = character(1), images=NULL)
 {
@@ -70,6 +85,8 @@
 
 
 #' List the tags of an Image
+#'
+#' @keywords internal
 .docker_image_tags_list <-
     function(image = character(1))
 {
@@ -80,62 +97,12 @@
 #' Get docker image description
 #'
 #' @param `character(1)` image name with organization name
+#'
+#' @keywords internal
 .docker_image_description <-
     function(image=character(1))
 {
     trimws(.docker_get(image)$description)
-}
-
-#' List available images with tags for Bioconductor
-#'
-#' @importFrom tibble tibble
-#'
-#' @export
-available <-
-    function(pattern = "", version = BiocManager::version(),
-             organization = "bioconductor", deprecated = FALSE)
-{
-    ## Pattern validity check
-    stopifnot(
-        is.character(pattern),
-        length(pattern) == 1L,
-        !is.na(pattern),
-        is.logical(deprecated)
-    )
-
-    ## Get images
-    images <- .docker_image_list(organization)
-
-    images <- images[grep(pattern,
-                          images,
-                          value = FALSE, ignore.case = TRUE)]
-
-    repositories <- .docker_repository_list(organization, images)
-
-    ## Get descriptions
-    image_descriptions <- vapply(repositories,
-                                 .docker_image_description,
-                                 character(1))
-    ## TODO: DEPRECATE AND FILTER HERE
-
-    ## get tags in a list
-    image_tags <- lapply(repositories, .docker_image_tags_list)
-
-    ## TODO: replace 0 length strings with NA (nzchar), make helper
-    ## function to make "Tags" clean and Description
-
-    tags_string <- vapply(image_tags, paste, character(1), collapse=", ")
-
-    ## result
-    tbl <- tibble::tibble(Image = images,
-                   Description = image_descriptions,
-                   Tags = tags_string,
-                   Repository = repositories,
-                   Tags_list = image_tags)
-    if (!deprecated) {
-        tbl <- tbl[ !grepl("DEPRECATED", tbl$Description),]
-    }
-    tbl
 }
 
 
@@ -145,13 +112,6 @@ available <-
     return(NULL)
 }
 
-version <-
-    function(name = "")
-{
-    ver <- integer(1)
-
-    return(ver)
-}
 
 ###  python docker
 # docker = import("docker")
