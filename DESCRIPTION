@@ -16,7 +16,7 @@ Authors@R:c(
 Description: Package works analogous to BiocManager but for docker
 	     images. Use the BiocDockerManager package to install and
 	     manage docker images provided by the Bioconductor
-	     project. A convenient tool to install images, update
+	     project. A convenient package to install images, update
 	     images and find which Bioconductor based docker images
 	     are available. This package uses the python library - docker
 	     for a few functions.

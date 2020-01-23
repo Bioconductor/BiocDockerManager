@@ -1,5 +1,4 @@
-#' Docker command line function to run with arguments
-#'
+# Docker command line function to run with arguments
 .docker_do <- function(args) {
     err <- system2("docker", args, wait = TRUE)
     if (err)
@@ -37,6 +36,16 @@
 }
 
 
+#' Install/Pull a docker image
+#' 
+#' @export
+install <-
+    function(name, tag, ...)
+{
+    .docker_pull(name, tag, ...)
+}
+
+
 #' List installed images/available on local machine
 .docker_images <-
     function(name = "", quiet = FALSE)
@@ -48,12 +57,6 @@
 }
 
 
-install <-
-    function(name, tag)
-{
-    .docker_pull(name, tag)
-}
-
 #'
 #' @export
 installed <-
@@ -62,12 +65,23 @@ installed <-
     .docker_images(name, ...)
 }
 
+
+#' Check if all images available are
+#'
+#'
+#' @export
+valid <-
+    function()
+{
+    
+}
+
 ## TODO :
 
 ## valid() == valid
-## pull() == install
-## installed() == list
-## available()  == available
+## pull() == install (DONE)
+## installed() == list (DONE)
+## available()  == available (DONE)
 ## use_dockerfile() == template for users to get started to extend the bioconductor_docker image
 
 ## BONUS :

@@ -139,16 +139,6 @@ available <-
 }
 
 
-#' Check if all images available are
-#'
-#'
-#' @export
-valid <-
-    function()
-{
-    return(NULL)
-}
-
 .docker_inspect <-
     function()
 {

@@ -4,7 +4,7 @@
 \alias{.docker_pull}
 \title{Pull a docker image, see 'install()'}
 \usage{
-.docker_pull(name, tag, quiet = FALSE, all_tags = FALSE)
+.docker_pull(name, tag = "latest", quiet = FALSE, all_tags = FALSE)
 }
 \description{
 Pull a docker image, see 'install()'
