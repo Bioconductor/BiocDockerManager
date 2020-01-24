@@ -4,8 +4,16 @@
 \alias{use_dockerfile}
 \title{Use dockerfile template}
 \usage{
-use_dockerfile()
+use_dockerfile(name, path)
 }
 \description{
 Use dockerfile template
+}
+\examples{
+
+\dontrun{
+    
+    use_dockerfile("custom_image", tempdir())
+
+}
 }

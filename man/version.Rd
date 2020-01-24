@@ -4,7 +4,7 @@
 \alias{version}
 \title{Get version of bioconductor docker image}
 \usage{
-version(name = "")
+version(name = "bioconductor/bioconductor_docker", tag)
 }
 \description{
 Get version of bioconductor docker image

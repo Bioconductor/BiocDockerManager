@@ -4,7 +4,7 @@
 \alias{install}
 \title{Install/Pull a docker image}
 \usage{
-install(name, tag)
+install(name, tag, quiet = FALSE, all_tags = FALSE)
 }
 \description{
 Install/Pull a docker image
