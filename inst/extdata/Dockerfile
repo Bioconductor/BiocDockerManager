@@ -3,12 +3,12 @@ FROM bioconductor/bioconductor_docker:devel
 
 ## Add Description information
 LABEL name="{{{name}}}}" \
-      version="{{{version}}}" \
-      url="{{{url}}}" \ 
-      vendor="{{{owner}}}" \
-      maintainer="{{{maintainer}}}" \
-      description="{{{description}}}" \
-      license="{{{license}}}"
+      version="0.0.1" \
+      url="https://github.com/username/repository" \ 
+      vendor="Firstname Lastname" \
+      maintainer="name@email.com" \
+      description="Docker image description" \
+      license="Artistic-2.0"
 
 ## Install listed packages
-RUN R -e "BiocManager::install(c({{{packages}}}))"
+RUN R -e "BiocManager::install(c(package, package))"

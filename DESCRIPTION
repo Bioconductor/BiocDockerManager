@@ -28,6 +28,7 @@ Config/reticulate:
   )
 Depends: R (>= 4.0), reticulate
 Imports: httr, whisker, readr
+Suggests: BiocStyle, knitr, rmarkdown
 SystemRequirements: docker
 VignetteBuilder: knitr
 License: Artistic-2.0

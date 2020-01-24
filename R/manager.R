@@ -3,7 +3,6 @@
 #' @details 
 #'
 #' @param pattern
-#' @param version
 #' @param organization
 #' @param deprecated
 #' @return  
@@ -14,8 +13,9 @@
 #'
 #' @export
 available <-
-    function(pattern = "", version = BiocManager::version(),
-             organization = "bioconductor", deprecated = FALSE)
+    function(pattern = "",
+             organization = "bioconductor", 
+             deprecated = FALSE)
 {
     ## Pattern validity check
     stopifnot(
@@ -80,13 +80,16 @@ version <-
 #' 
 #' @export
 install <-
-    function(name, tag )
+    function(name, tag, quiet = FALSE, all_tags = FALSE)
 {
-    .docker_pull(name, tag, ...)
+    .docker_pull(name, tag, quiet, all_tags)
 }
 
 
 #' Get installed docker images
+#' 
+#' @param name `character(1)`, name of image; if not given 
+#'     all images will be shown.
 #' 
 #' @export
 installed <-
@@ -102,17 +105,37 @@ installed <-
 valid <-
     function()
 {
-    
+    return(NULL)
 }
 
-
+## FIXME: test
 #' Use dockerfile template
 #'
+#' @examples 
+#' 
+#' \dontrun{
+#'     
+#'     use_dockerfile("custom_image", tempdir())
+#' 
+#' }
+#' @importFrom whisker whisker.render
 #' @export
 use_dockerfile <-
-    function()
+    function(name, path)
 {
-    return(NULL)
+    ## Create folder with Dockerfile
+    f <- file.path(path, name)
+    if (!dir.exists(f)) {
+        dir.create(f)
+    }
+    from = system.file("extdata", "Dockerfile", 
+                        package = "BiocDockerManager")
+    to = file.path(f, "Dockerfile")
+    file.copy(from, to, overwrite = FALSE)
+    
+    ## render with name
+    writeLines(whisker::whisker.render(to, list(name)), to)
+    file.create(file.path(f, "README.md"))
 }
 
 

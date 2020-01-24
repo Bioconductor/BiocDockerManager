@@ -1,0 +1,17 @@
+---
+title: "BiocDockerManager Vignette"
+author: "Nitesh Turaga"
+package: BiocDockerManager
+output: 
+    BiocStyle::html_document
+vignette: >
+    %\VignetteIndexEntry{BiocDockerManager Vignette}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}  
+---
+
+## Introduction
+
+## Quick start
+
+## Usage
