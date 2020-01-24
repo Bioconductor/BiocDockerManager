@@ -23,7 +23,7 @@ List installed images/available on local machine.
     .docker_images()
 
     .docker_images("bioconductor/bioconductor_docker")
-    
+
     .docker_images("bioconductor/bioconductor_docker", quiet = TRUE)
 }
 }

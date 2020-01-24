@@ -7,7 +7,7 @@
 installed(name = "", ...)
 }
 \arguments{
-\item{name}{`character(1)`, name of image; if not given 
+\item{name}{`character(1)`, name of image; if not given
 all images will be shown.}
 }
 \description{

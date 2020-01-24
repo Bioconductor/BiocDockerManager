@@ -6,15 +6,38 @@
 \usage{
 available(pattern = "", organization = "bioconductor", deprecated = FALSE)
 }
-\value{
+\arguments{
+\item{pattern}{`character(1)`, a pattern to filter the names of
+images.}
 
+\item{organization}{`character(1)`, organization whose list of
+images hosted on dockerhub will be displayed. Default is
+'bioconductor'.}
+
+\item{deprecated}{`logical(1)`, TRUE will show deprecated images.}
+}
+\value{
+`tibble` of available images
 }
 \description{
 List available images with tags for Bioconductor
 }
 \details{
-
+Return a tibble of all the available docker images in an
+    organization. The tibble will show the Image name, description,
+    tags, repository-name, pull-count. By default this function is
+    designed to show the available images under the Bioconductor
+    organization in dockerhub.
 }
 \examples{
+\dontrun{
+res <- available()
+
+res <- available("bioconductor_docker")
+
+res <- available(pattern = "rstudio", organization = "rocker")
+
+res <- available(deprecated = TRUE)
+}
 
 }

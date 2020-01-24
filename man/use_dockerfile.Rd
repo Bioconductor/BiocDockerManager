@@ -6,13 +6,19 @@
 \usage{
 use_dockerfile(name, path)
 }
+\arguments{
+\item{name}{`character(1)`, name of the image.}
+
+\item{path}{`character(1)`, parent path where folder repository
+should be created.}
+}
 \description{
 Use dockerfile template
 }
 \examples{
 
 \dontrun{
-    
+
     use_dockerfile("custom_image", tempdir())
 
 }

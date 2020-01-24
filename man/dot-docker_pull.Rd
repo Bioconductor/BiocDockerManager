@@ -9,7 +9,7 @@
 \arguments{
 \item{name}{`character(1)`, name of the image.}
 
-\item{tag}{`character(1)`, name of the tag for the image. 'latest' is 
+\item{tag}{`character(1)`, name of the tag for the image. 'latest' is
 default.}
 
 \item{quiet}{`logical(1)`, status of download is not displayed if TRUE.}

@@ -1,13 +1,13 @@
 #' Internal function to run commands using system2
-#' 
+#'
 #' This function has a tryCatch block to show the error message
-#' when the wrong 
-#' 
+#' when the wrong
+#'
 #' @keywords internal
-#' 
+#'
 #' @param cmd command line tool
 #' @param args arguments for command line tool in a character vector
-#' 
+#'
 .FUN <- function(cmd, args) {
     tryCatch({
         system2(cmd, args, stdout = TRUE, stderr = TRUE)
@@ -28,37 +28,37 @@
 
 
 #' Docker command line function to run with arguments
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 #' @param args arguments to docker command in a character vector
-#' 
+#'
 .docker_do <- function(args) {
     .FUN("docker", args)
 }
 
 
 #' Pull a docker image, see 'install()'
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 #' @param name `character(1)`, name of the image.
-#' @param tag `character(1)`, name of the tag for the image. 'latest' is 
+#' @param tag `character(1)`, name of the tag for the image. 'latest' is
 #'             default.
 #' @param quiet `logical(1)`, status of download is not displayed if TRUE.
 #' @param all_tags `logical(1)`, pull all the tags of the image name.
-#' 
+#'
 #' @return exit status of `docker_pull()` command.
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' \dontrun{
 #' .docker_pull("bioconductor/bioconductor_docker")
-#' 
+#'
 #' .docker_pull("bioconductor/bioconductor_docker", tag = "devel")
-#' 
+#'
 #' .docker_pull("bioconductor/bioconductor_docker", all_tags=TRUE)
-#' 
+#'
 #' .docker_pull("bioconductor/bioconductor_docker", quiet=TRUE)
 #' }
 .docker_pull <- function(name, tag = "latest",
@@ -87,22 +87,22 @@
 
 
 #' List installed images/available on local machine.
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 #' @param name `character(1)`, name of the image.
-#' @param quiet `logical(1)`, output shows only IMAGE ID's if TRUE. 
+#' @param quiet `logical(1)`, output shows only IMAGE ID's if TRUE.
 #' @return tibble with the docker images
 
 #' @importFrom readr read_table
-#' 
-#' @examples 
-#' 
+#'
+#' @examples
+#'
 #' \dontrun{
 #'     .docker_images()
-#' 
+#'
 #'     .docker_images("bioconductor/bioconductor_docker")
-#'     
+#'
 #'     .docker_images("bioconductor/bioconductor_docker", quiet = TRUE)
 #' }
 .docker_images <-
