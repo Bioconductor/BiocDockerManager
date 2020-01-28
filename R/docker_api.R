@@ -93,7 +93,6 @@
 #' @param name `character(1)`, name of the image.
 #' @param quiet `logical(1)`, output shows only IMAGE ID's if TRUE.
 #' @return tibble with the docker images
-
 #' @importFrom readr read_table
 #'
 #' @examples
@@ -109,19 +108,7 @@
     function(name = "", quiet = FALSE)
 {
     stopifnot(is.logical(quiet))
-
     cmd <- c("images", if (quiet) "--quiet", name)
     res <- .docker_do(cmd)
     read_table(res)
 }
-
-
-## TODO :
-## valid() == valid
-## pull() == install (DONE)
-## installed() == list (DONE)
-## use_dockerfile() == template for users to get started to extend the bioconductor_docker image
-
-## BONUS :
-## run()
-## stop()
