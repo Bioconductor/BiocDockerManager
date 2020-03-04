@@ -9,21 +9,16 @@
 #' @param args arguments for command line tool in a character vector
 #'
 .FUN <- function(cmd, args) {
-    tryCatch({
-        system2(cmd, args, stdout = TRUE, stderr = TRUE)
-    }, error = function(e) {
+    result <- system2(cmd, args)
+    if (result) {
+        ## error
         stop(
             "'", cmd, " ",
-            paste(args, collapse = " "), "' failed. reason:",
-            "\n  ", conditionMessage(e)
+            paste(args, collapse = " "), "' failed. status: ",
+            result
         )
-    }, warning = function(e) {
-        stop(
-            "'", cmd, " ",
-            paste(args, collapse = " "), "' failed. reason:",
-            "\n  ", conditionMessage(e)
-        )
-    })
+    }
+    invisible(result)
 }
 
 

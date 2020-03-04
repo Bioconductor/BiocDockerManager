@@ -8,10 +8,13 @@
 #'
 #' @param pattern `character(1)`, a pattern to filter the names of
 #'     images.
+#'
 #' @param organization `character(1)`, organization whose list of
 #'     images hosted on dockerhub will be displayed. Default is
 #'     'bioconductor'.
+#'
 #' @param deprecated `logical(1)`, TRUE will show deprecated images.
+#'
 #' @return `tibble` of available images
 #'
 #' @examples
@@ -29,24 +32,24 @@
 #'
 #' @export
 available <-
-    function(pattern = "",
+    function(pattern,
              organization = "bioconductor",
              deprecated = FALSE)
 {
     ## Pattern validity check
     stopifnot(
-        is.character(pattern),
-        length(pattern) == 1L,
-        !is.na(pattern),
-        is.logical(deprecated)
+        missing(pattern) || .is_scalar_character(pattern),
+        .is_scalar_character(organization),
+        .is_scalar_logical(deprecated)
     )
 
     ## Get images
     images <- .docker_image_list(organization)
 
-    images <- images[grep(pattern,
-                          images,
-                          value = FALSE, ignore.case = TRUE)]
+    if (!missing(pattern)) {
+        filter <- grep(pattern, images, value = FALSE, ignore.case = TRUE)
+        images <- images[filter]
+    }
 
     repositories <- .docker_repository_list(organization, images)
 
@@ -66,19 +69,23 @@ available <-
     tags <- lapply(repositories, .docker_image_tags_list)
     image_tags <- vapply(tags, paste, character(1), collapse=", ")
     image_tags[!nzchar(image_tags)] <- NA_character_
+    image_descriptions[!nzchar(image_descriptions)] <- NA_character_
 
     ## Get pull count
-    pull_count <- vapply(repositories,
-                         .docker_image_pull_count,
-                         numeric(1))
+    pull_count <- vapply(
+        repositories,
+        .docker_image_pull_count,
+        numeric(1)
+    )
 
     ## result
-    tbl <- tibble::tibble(Image = images,
-                          Description = image_descriptions,
-                          Tags = trimws(image_tags),
-                          Repository = repositories,
-                          Downloads = pull_count)
-    tbl
+    tibble(
+        IMAGE = images,
+        DESCRIPTION = image_descriptions,
+        TAGS = trimws(image_tags),
+        REPOSITORY = repositories,
+        DOWNLOADS = pull_count
+    )
 }
 
 #' Get version of bioconductor docker image
@@ -122,47 +129,4 @@ valid <-
     function()
 {
     return(NULL)
-}
-
-
-#' Use dockerfile template
-#'
-#' @param name `character(1)`, name of the image.
-#' @param path `character(1)`, parent path where folder repository
-#'     should be created.
-#'
-#' @examples
-#'
-#' \dontrun{
-#'
-#'     use_dockerfile("custom_image", tempdir())
-#'
-#' }
-#' @importFrom whisker whisker.render
-#' @export
-use_dockerfile <-
-    function(name, path)
-{
-    stopifnot(
-        !is.na(name), !is.na(path)
-    )
-
-    ## Create folder with Dockerfile
-    f <- file.path(path, name)
-    if (!dir.exists(f)) {
-        dir.create(f)
-    }
-
-    dockerfile = readLines(
-        system.file("extdata", "Dockerfile",
-                    package = "BiocDockerManager")
-    )
-
-    ## render with name
-    writeLines(
-        whisker.render(dockerfile,
-                       data = list(name = name)),
-        file.path(f, "Dockerfile")
-    )
-    file.create(file.path(f, "README.md"))
 }
