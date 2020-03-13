@@ -4,7 +4,7 @@
 \alias{.FUN}
 \title{Internal function to run commands using system2}
 \usage{
-.FUN(cmd, args)
+.FUN(cmd, args, stdout = FALSE)
 }
 \arguments{
 \item{cmd}{command line tool}

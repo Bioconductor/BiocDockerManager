@@ -4,12 +4,23 @@
 \alias{installed}
 \title{Get installed docker images}
 \usage{
-installed(name = "", ...)
+installed(name)
 }
 \arguments{
 \item{name}{`character(1)`, name of image; if not given
 all images will be shown.}
 }
+\value{
+stdout of docker images on your local machine.
+}
 \description{
 Get installed docker images
+}
+\examples{
+\dontrun{
+   BiocDockerManager::installed()
+
+   BiocDockerManager::installed(name = "bioconductor/bioconductor_docker")
+}
+
 }

@@ -4,7 +4,7 @@
 \alias{.docker_images}
 \title{List installed images/available on local machine.}
 \usage{
-.docker_images(name = "", quiet = FALSE)
+.docker_images(name)
 }
 \arguments{
 \item{name}{`character(1)`, name of the image.}

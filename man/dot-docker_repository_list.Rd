@@ -4,7 +4,7 @@
 \alias{.docker_repository_list}
 \title{Get list of repositories, i.e, organization/image_name}
 \usage{
-.docker_repository_list(organization = character(1), images = NULL)
+.docker_repository_list(organization, images = NULL)
 }
 \description{
 Get list of repositories, i.e, organization/image_name

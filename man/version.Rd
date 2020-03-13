@@ -6,6 +6,33 @@
 \usage{
 version(name = "bioconductor/bioconductor_docker", tag)
 }
+\arguments{
+\item{name}{`character(1)`, name of the docker image.}
+
+\item{tag}{`character(1)`, tag of the docker image.}
+}
+\value{
+`character` vector representing the version number.
+}
 \description{
 Get version of bioconductor docker image
+}
+\details{
+The version of the images provided by Bioconductor are
+    unique. They are represented by 'x.y.z' where, the 'x.y'
+    represent the version of Bioconductor and the '.z' represents
+    the version of the Dockerfile used to build the Docker
+    image. This is especially useful in terms of reproducibility
+    and tracking changes when using the Docker images provided by
+    Bioconductor.
+}
+\examples{
+\dontrun{
+BiocDockerManager::version("bioconductor/bioconductor_docker",
+                               tag = "latest")
+
+BiocDockerManager::version("bioconductor/bioconductor_docker",
+                               tag = "devel")
+}
+
 }

@@ -8,8 +8,12 @@
 #' @param cmd command line tool
 #' @param args arguments for command line tool in a character vector
 #'
-.FUN <- function(cmd, args) {
-    result <- system2(cmd, args)
+.FUN <- function(cmd, args, stdout = FALSE) {
+    result <- system2(cmd, args,
+                      if (stdout) stdout = stdout)
+    if(stdout)
+        return(result)
+
     if (result) {
         ## error
         stop(
@@ -28,8 +32,8 @@
 #'
 #' @param args arguments to docker command in a character vector
 #'
-.docker_do <- function(args) {
-    .FUN("docker", args)
+.docker_do <- function(args, ...) {
+    .FUN("docker", args, ...)
 }
 
 
@@ -61,8 +65,8 @@
 {
     stopifnot(
         !is.na(name), length(name) == 1L,
-        is.logical(quiet),
-        is.logical(all_tags)
+        .is_scalar_logical(quiet),
+        .is_scalar_logical(all_tags)
     )
 
     ## FIXME: This needs to be corrected.
@@ -100,10 +104,82 @@
 #'     .docker_images("bioconductor/bioconductor_docker", quiet = TRUE)
 #' }
 .docker_images <-
-    function(name = "", quiet = FALSE)
+    function(name)
 {
-    stopifnot(is.logical(quiet))
-    cmd <- c("images", if (quiet) "--quiet", name)
-    res <- .docker_do(cmd)
+    stopifnot(
+        .is_character_0_or_1(name, zchar=TRUE)
+    )
+    cmd <- c("images", name)
+    res <- .docker_do(cmd, stdout = TRUE)
     read_table(res)
+}
+
+
+#' Inspect docker image by label
+#'
+#' @keywords internal
+#'
+#' @param name `character(1)`, name of the image.
+#'
+#' @param tag `character(1)`, tag for the image.
+#'
+#' @param label `character(1)` label name from the list - "name",
+#'     "description", "version", "url", "maintainer",
+#'     "license","vendor"
+#'
+.docker_inspect_label <-
+    function(name, tag,
+             label = c("name", "description",
+                       "version", "url",
+                       "maintainer", "license","vendor")
+             )
+{
+    label <- match.arg(label)
+
+    stopifnot(
+        .is_scalar_character(name),
+        missing(tag) || .is_scalar_character(tag),
+        .is_scalar_character(label)
+    )
+
+    cmd <- c("inspect",
+             "-f",
+             sprintf("'{{.Config.Labels.%s}}'", label),
+             paste0(name, if(!missing(tag)) paste0(":", tag)))
+
+    .docker_do(cmd, stdout = TRUE)
+}
+
+
+#' Inspect docker image digest value
+#'
+#' @keywords internal
+#'
+#' @param name `character(1)`, name of the image.
+#'
+#' @param tag `character(1)`, tag for the image.
+#'
+.docker_inspect_digest <-
+    function(name, tag)
+{
+    stopifnot(
+        .is_scalar_character(name),
+        missing(tag) || .is_scalar_character(tag)
+    )
+
+    if(missing(tag))
+        tag = "latest"
+
+    cmd <- c("inspect",
+             "-f", "'{{.RepoDigests}}={{.Created}}'",
+             paste(name, tag, sep=":"))
+
+    res <- .docker_do(cmd, stdout = TRUE)
+    digest <- strsplit(res, split = "=")[[1]][1]
+
+    tibble(
+        image = name,
+        tag = tag,
+        repo_digest = substr(digest, nchar(name) + 3, nchar(digest) - 1)
+    )
 }

@@ -2,10 +2,34 @@
 % Please edit documentation in R/manager.R
 \name{install}
 \alias{install}
-\title{Install/Pull a docker image}
+\title{Install a docker image on your local machine}
 \usage{
 install(name, tag, quiet = FALSE, all_tags = FALSE)
 }
+\arguments{
+\item{name}{`character(1)`, name of the docker image.}
+
+\item{tag}{`character(1)`, tag of the docker image.}
+
+\item{quiet}{`logical(1)`, if TRUE suppress verbose output
+generated from the download.}
+
+\item{all_tags}{`logical(1)`, pull all the tags of the image}
+}
 \description{
-Install/Pull a docker image
+Install a docker image on your local machine
+}
+\details{
+The function works similar to the 'docker pull'
+    command. It downloads a docker image from Dockerhub on to the
+    local machine, in a place which the docker engine knows about,
+    building your local registry of docker images.
+}
+\examples{
+\dontrun{
+BiocDockerManager::install(name = "bioconductor/bioconductor_docker",
+                           tag = "latest")
+
+}
+
 }

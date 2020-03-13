@@ -4,7 +4,7 @@
 \alias{.docker_image_tags_list}
 \title{List the tags of an Image}
 \usage{
-.docker_image_tags_list(image = character(1))
+.docker_image_tags_list(image)
 }
 \description{
 List the tags of an Image

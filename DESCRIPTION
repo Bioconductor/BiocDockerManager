@@ -2,7 +2,7 @@ Package: BiocDockerManager
 Type: Package
 Title: Access Bioconductor docker images
 Version: 0.1.0
-Authors@R:c(
+Authors@R: c(
     person(
 	"Maintainer",
 	email = "maintainer@bioconductor.org",
@@ -18,11 +18,14 @@ Description: Package works analogous to BiocManager but for docker
 	     manage docker images provided by the Bioconductor
 	     project. A convenient package to install images, update
 	     images and find which Bioconductor based docker images
-	     are available. This package uses the python library - docker
-	     for a few functions.
+	     are available.
 Depends: R (>= 4.0)
 Imports: httr, whisker, readr
-Suggests: BiocStyle, knitr, rmarkdown
+Suggests:
+    BiocStyle,
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)
 SystemRequirements: docker
 VignetteBuilder: knitr
 License: Artistic-2.0

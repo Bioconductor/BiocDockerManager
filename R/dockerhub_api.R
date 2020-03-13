@@ -9,6 +9,8 @@
 .docker_get_query <-
     function(query)
 {
+    stopifnot(.is_scalar_character(query))
+
     response <- GET(query)
     tryCatch({
         stop_for_status(response)
@@ -28,9 +30,16 @@
 #' @param path_root `character(1)` query substring
 #'
 .docker_get <-
-    function(path, api = "https://hub.docker.com/v2",
+    function(path,
+             api = "https://hub.docker.com/v2",
              path_root = "/repositories/")
 {
+    stopifnot(
+        .is_scalar_character(path),
+        .is_scalar_character(api),
+        .is_scalar_character(path_root)
+    )
+
     query <- sprintf("%s%s%s", api, path_root, path)
     .docker_get_query(query)
 }
@@ -51,10 +60,13 @@
 #' }
 #'
 .docker_image_pull_count <-
-    function(image = character(1))
+    function(image)
 {
+    stopifnot(.is_scalar_character(image))
+
     .docker_get(image)$pull_count
 }
+
 
 #' Get the list of images under an organization account.
 #'
@@ -73,8 +85,10 @@
 #'     on dockerhub.
 #'
 .docker_image_list <-
-    function(organization = character(1))
+    function(organization)
 {
+    stopifnot(.is_scalar_character(organization))
+
     org_pages <- .docker_get(sprintf("%s/?page_size=100",organization))
     vapply(org_pages$results, `[[`, character(1), "name")
 }
@@ -85,10 +99,12 @@
 #' @keywords internal
 #'
 .docker_repository_list <-
-    function(organization = character(1), images=NULL)
+    function(organization, images=NULL)
 {
+    stopifnot(.is_scalar_character(organization))
+
     if (is.null(images)) {
-        images = .docker_image_list(organization)
+        images <- .docker_image_list(organization)
     }
     paste(organization, images, sep="/")
 }
@@ -98,19 +114,52 @@
 #'
 #' @keywords internal
 .docker_image_tags_list <-
-    function(image = character(1))
+    function(image)
 {
+    stopifnot(.is_scalar_character(image))
+
     tags_pages <- .docker_get(paste(image, "tags", sep="/"))
     vapply(tags_pages$results, `[[`, character(1), "name")
 }
+
 
 #' Get docker image description
 #'
 #' @param `character(1)` image name with organization name
 #'
 #' @keywords internal
+#'
 .docker_image_description <-
-    function(image=character(1))
+    function(image)
 {
+    stopifnot(.is_scalar_character(image))
+
     trimws(.docker_get(image)$description)
+}
+
+
+#' Get all the docker image digest values for the image name provided
+#'
+#' @param `character(1)` image name with organization name
+#'
+#' @keywords internal
+#'
+.docker_image_digests <-
+    function(image = "bioconductor/bioconductor_docker")
+{
+    ## query
+    tags <- .docker_get(paste(image, "tags", sep="/"))
+
+    ## tag names
+    tag <- vapply(tags$results, `[[`, character(1), "name")
+
+    ## get digest SHA
+    images <- vapply(tags$results, `[[`, list(1), "images")
+    digest <- vapply(images, `[[`,character(1), "digest")
+
+    ## return tibble
+    tibble(image = image,
+           tag = tag,
+           ## last_updated = last_updated,
+           repo_digest = digest)
 }

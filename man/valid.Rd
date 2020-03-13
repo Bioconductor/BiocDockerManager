@@ -2,10 +2,30 @@
 % Please edit documentation in R/manager.R
 \name{valid}
 \alias{valid}
-\title{Check if all images available are}
+\title{Check if all images available are valid}
 \usage{
-valid()
+valid(name = "bioconductor/bioconductor_docker", tag = "latest")
+}
+\arguments{
+\item{name}{`character(1)`, name of the docker image.}
+
+\item{tag}{`character(1)`, tag of the docker image.}
+}
+\value{
+tibble with the name and tag of image which needs to be
+    updated.
 }
 \description{
-Check if all images available are
+Check if all images available are valid
+}
+\details{
+Check if the image is valid, i.e to see if the image is up
+    to date with the image hosted by bioconductor on the Dockerhub
+    organization page.
+}
+\examples{
+\dontrun{
+   BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
+}
+
 }

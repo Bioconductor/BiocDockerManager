@@ -4,7 +4,7 @@
 \alias{available}
 \title{List available images with tags for Bioconductor}
 \usage{
-available(pattern = "", organization = "bioconductor", deprecated = FALSE)
+available(pattern, organization = "bioconductor", deprecated = FALSE)
 }
 \arguments{
 \item{pattern}{`character(1)`, a pattern to filter the names of

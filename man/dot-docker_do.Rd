@@ -4,7 +4,7 @@
 \alias{.docker_do}
 \title{Docker command line function to run with arguments}
 \usage{
-.docker_do(args)
+.docker_do(args, ...)
 }
 \arguments{
 \item{args}{arguments to docker command in a character vector}

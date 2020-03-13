@@ -4,7 +4,7 @@
 \alias{.docker_image_list}
 \title{Get the list of images under an organization account.}
 \usage{
-.docker_image_list(organization = character(1))
+.docker_image_list(organization)
 }
 \arguments{
 \item{`character(1)`}{name of organization or "username".}

@@ -4,7 +4,7 @@
 \alias{.docker_image_pull_count}
 \title{Get Docker image pull count (number of times downloaded)}
 \usage{
-.docker_image_pull_count(image = character(1))
+.docker_image_pull_count(image)
 }
 \arguments{
 \item{`character(1)`}{docker image name with organization}

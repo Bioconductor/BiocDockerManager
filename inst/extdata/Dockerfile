@@ -10,10 +10,10 @@ FROM bioconductor/bioconductor_docker:devel
 LABEL name = "{{name}}" \
       version = "0.99.0" \
       url = "https://github.com/username/{{name}}" \
-      vendor = "FirstName LastName" \
-      maintainer = "username@email.com" \
-      description = "Docker image description" \
-      license = "Artistic-2.0"
+      vendor = "{{FirstName}} {{LastName}}" \
+      maintainer = "{{maintainer_email}}" \
+      description = "{{{description}}}" \
+      license = "{{license}}"
 
 ## Install listed packages
 RUN R -e "BiocManager::install(c(package, package))"

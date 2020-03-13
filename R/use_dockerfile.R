@@ -1,6 +1,11 @@
 #' Use dockerfile template
 #'
 #' @param name `character(1)`, name of the image.
+#'
+#' @param person `person(1)`, class person which holds information
+#'     about persons like name, email address, and maintainer/author
+#'     information.
+#'
 #' @param path `character(1)`, parent path where folder repository
 #'     should be created.
 #'
@@ -18,9 +23,14 @@ use_dockerfile <-
              path = tempdir())
 {
     stopifnot(
-        !is.na(name), !is.na(path),
+        !is.na(name),
+        !is.na(path),
         is(person, "person")
     )
+
+    if (missing(description)) {
+        description <- "Docker image description."
+    }
 
     ## Create folder with Dockerfile
     f <- file.path(path, name)

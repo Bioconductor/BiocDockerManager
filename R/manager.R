@@ -88,23 +88,101 @@ available <-
     )
 }
 
+
 #' Get version of bioconductor docker image
+#'
+#' @details The version of the images provided by Bioconductor are
+#'     unique. They are represented by 'x.y.z' where, the 'x.y'
+#'     represent the version of Bioconductor and the '.z' represents
+#'     the version of the Dockerfile used to build the Docker
+#'     image. This is especially useful in terms of reproducibility
+#'     and tracking changes when using the Docker images provided by
+#'     Bioconductor.
+#'
+#' @param name `character(1)`, name of the docker image.
+#'
+#' @param tag `character(1)`, tag of the docker image.
+#'
+#' @return `character` vector representing the version number.
+#'
+#' @examples
+#' \dontrun{
+#' BiocDockerManager::version("bioconductor/bioconductor_docker",
+#'                                tag = "latest")
+#'
+#' BiocDockerManager::version("bioconductor/bioconductor_docker",
+#'                                tag = "devel")
+#' }
 #'
 #' @export
 version <-
     function(name = "bioconductor/bioconductor_docker", tag)
 {
-    labels <- .docker_inspect(name, tag)
-    labels$version
+    .docker_inspect_label(name, tag, label = "version")
 }
 
 
-#' Install/Pull a docker image
+#' Get maintainer of bioconductor docker image
+#'
+#' @details The maintainer name and email provides information for who
+#'     you can contact in case the image isn't working as expected.
+#'
+#' @param name `character(1)`, name of the docker image.
+#'
+#' @param tag `character(1)`, tag of the docker image.
+#'
+#' @return `character` vector representing the maintainer.
+#'
+#' @examples
+#' \dontrun{
+#' BiocDockerManager::maintainer("bioconductor/bioconductor_docker",
+#'                                tag = "latest")
+#' }
+#' @export
+maintainer <-
+    function(name = "bioconductor/bioconductor_docker", tag)
+{
+    .docker_inspect_label(name, tag, label = "maintainer")
+}
+
+
+#' Install a docker image on your local machine
+#'
+#' @details The function works similar to the 'docker pull'
+#'     command. It downloads a docker image from Dockerhub on to the
+#'     local machine, in a place which the docker engine knows about,
+#'     building your local registry of docker images.
+#'
+#' @param name `character(1)`, name of the docker image.
+#'
+#' @param tag `character(1)`, tag of the docker image.
+#'
+#' @param quiet `logical(1)`, if TRUE suppress verbose output
+#'     generated from the download.
+#'
+#' @param all_tags `logical(1)`, pull all the tags of the image
+#'
+#' @examples
+#' \dontrun{
+#' BiocDockerManager::install(name = "bioconductor/bioconductor_docker",
+#'                            tag = "latest")
+#'
+#' }
+#'
+#' @return NULL
 #'
 #' @export
 install <-
     function(name, tag, quiet = FALSE, all_tags = FALSE)
 {
+    ## validity check
+    stopifnot(
+        .is_scalar_character(name),
+        .is_scalar_character(tag),
+        .is_scalar_logical(quiet),
+        .is_scalar_logical(all_tags)
+    )
+
     .docker_pull(name, tag, quiet, all_tags)
 }
 
@@ -114,19 +192,77 @@ install <-
 #' @param name `character(1)`, name of image; if not given
 #'     all images will be shown.
 #'
+#' @examples
+#' \dontrun{
+#'    BiocDockerManager::installed()
+#'
+#'    BiocDockerManager::installed(name = "bioconductor/bioconductor_docker")
+#' }
+#'
+#' @return stdout of docker images on your local machine.
+#'
 #' @export
 installed <-
-    function(name = "", ...)
+    function(name)
 {
-    .docker_images(name, ...)
+    if (missing(name))
+        name = character(1)
+
+    .docker_images(name)
 }
 
-#' Check if all images available are
+#' Check if all images available are valid
 #'
+#' @details Check if the image is valid, i.e to see if the image is up
+#'     to date with the image hosted by bioconductor on the Dockerhub
+#'     organization page.
+#'
+#' @param name `character(1)`, name of the docker image.
+#'
+#' @param tag `character(1)`, tag of the docker image.
+#'
+#'
+#' @importFrom dplyr anti_join
+#' @importFrom dplyr select
+#'
+#' @return tibble with the name and tag of image which needs to be
+#'     updated.
+#'
+#' @examples
+#' \dontrun{
+#'    BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
+#' }
 #'
 #' @export
 valid <-
-    function()
+    function(name="bioconductor/bioconductor_docker", tag="latest")
 {
-    return(NULL)
+    stopifnot(
+        .is_scalar_character(name),
+        .is_scalar_character(tag)
+    )
+
+    ## Image digests from dockerhub
+    hub <- .docker_image_digests()
+    ## Local image digest
+    local <- .docker_inspect_digest(name, tag)
+    to_update <- dplyr::anti_join(x = local, y = hub, by = ("repo_digest"))
+
+    message("The following bioconductor images need to be updated,")
+    select(to_update, image, tag)
+}
+
+#' Help function to direct brower to Bioconductor dockerhub
+#'
+#' @param name `character(1)`, name of image. Default image is the
+#'     main 'bioconductor/bioconductor_docker' image.
+#'
+#' @return Open a browser tab with docker repository
+#'
+#' @export
+help <-
+    function(name = "bioconductor/bioconductor_docker")
+{
+    url <- paste0("https://hub.docker.com/r/", name)
+    browseURL(url)
 }
