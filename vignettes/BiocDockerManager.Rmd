@@ -212,11 +212,8 @@ The typical workflow would look like the following:
 
 BiocDockerManager::available()
 
+## TODO
 BiocDockerManager::install()
-
-BiocDockerManager::version("bioconductor/bioconductor_docker", tag = "devel")
-
-BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
 ```
 
 Once some time has passed and if you are not sure if you image is upto date,

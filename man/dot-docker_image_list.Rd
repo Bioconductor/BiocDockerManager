@@ -7,7 +7,7 @@
 .docker_image_list(organization)
 }
 \arguments{
-\item{`character(1)`}{name of organization or "username".}
+\item{organization}{`character(1)` name of organization or "username".}
 }
 \value{
 `character(1)` vector of images hosted by the organization

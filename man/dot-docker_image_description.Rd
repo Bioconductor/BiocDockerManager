@@ -4,10 +4,10 @@
 \alias{.docker_image_description}
 \title{Get docker image description}
 \usage{
-.docker_image_description(image)
+.docker_image_description(repository)
 }
 \arguments{
-\item{`character(1)`}{image name with organization name}
+\item{repository}{`character(1)` repository name}
 }
 \description{
 Get docker image description

@@ -4,17 +4,17 @@
 \alias{.docker_pull}
 \title{Pull a docker image, see 'install()'}
 \usage{
-.docker_pull(name, tag = "latest", quiet = FALSE, all_tags = FALSE)
+.docker_pull(repository, tag = "latest", quiet = FALSE, all_tags = FALSE)
 }
 \arguments{
-\item{name}{`character(1)`, name of the image.}
+\item{repository}{`character(1)`, repository name of the image.}
 
-\item{tag}{`character(1)`, name of the tag for the image. 'latest' is
+\item{tag}{`character(1)`, repository of the tag for the image. 'latest' is
 default.}
 
 \item{quiet}{`logical(1)`, status of download is not displayed if TRUE.}
 
-\item{all_tags}{`logical(1)`, pull all the tags of the image name.}
+\item{all_tags}{`logical(1)`, pull all the tags of the image repository.}
 }
 \value{
 exit status of `docker_pull()` command.

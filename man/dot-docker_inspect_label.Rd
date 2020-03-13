@@ -5,17 +5,17 @@
 \title{Inspect docker image by label}
 \usage{
 .docker_inspect_label(
-  name,
+  repository,
   tag,
   label = c("name", "description", "version", "url", "maintainer", "license", "vendor")
 )
 }
 \arguments{
-\item{name}{`character(1)`, name of the image.}
+\item{repository}{`character(1)`, repository name of the image.}
 
 \item{tag}{`character(1)`, tag for the image.}
 
-\item{label}{`character(1)` label name from the list - "name",
+\item{label}{`character(1)` label repository from the list - "repository",
 "description", "version", "url", "maintainer",
 "license","vendor"}
 }

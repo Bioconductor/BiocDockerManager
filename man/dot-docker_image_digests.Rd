@@ -4,10 +4,10 @@
 \alias{.docker_image_digests}
 \title{Get all the docker image digest values for the image name provided}
 \usage{
-.docker_image_digests(image = "bioconductor/bioconductor_docker")
+.docker_image_digests(repository = "bioconductor/bioconductor_docker")
 }
 \arguments{
-\item{`character(1)`}{image name with organization name}
+\item{repository}{`character(1)` image name with organization name}
 }
 \description{
 Get all the docker image digest values for the image name provided

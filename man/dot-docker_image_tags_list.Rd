@@ -4,7 +4,13 @@
 \alias{.docker_image_tags_list}
 \title{List the tags of an Image}
 \usage{
-.docker_image_tags_list(image)
+.docker_image_tags_list(repository)
+}
+\arguments{
+\item{repository}{`character(1)` name of the repository}
+}
+\value{
+list of tags for repository
 }
 \description{
 List the tags of an Image

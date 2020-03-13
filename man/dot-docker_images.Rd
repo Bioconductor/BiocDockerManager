@@ -4,10 +4,10 @@
 \alias{.docker_images}
 \title{List installed images/available on local machine.}
 \usage{
-.docker_images(name)
+.docker_images(repository)
 }
 \arguments{
-\item{name}{`character(1)`, name of the image.}
+\item{repository}{`character(1)`, repository name of the image.}
 
 \item{quiet}{`logical(1)`, output shows only IMAGE ID's if TRUE.}
 }

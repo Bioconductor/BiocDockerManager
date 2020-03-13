@@ -4,10 +4,10 @@
 \alias{version}
 \title{Get version of bioconductor docker image}
 \usage{
-version(name = "bioconductor/bioconductor_docker", tag)
+version(repository = "bioconductor/bioconductor_docker", tag)
 }
 \arguments{
-\item{name}{`character(1)`, name of the docker image.}
+\item{repository}{`character(1)`, repository of the docker image.}
 
 \item{tag}{`character(1)`, tag of the docker image.}
 }

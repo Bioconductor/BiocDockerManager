@@ -7,7 +7,7 @@
 .docker_image_pull_count(image)
 }
 \arguments{
-\item{`character(1)`}{docker image name with organization}
+\item{image}{`character(1)` docker image name with organization}
 }
 \value{
 `numeric(1)` number showing how many times the image has

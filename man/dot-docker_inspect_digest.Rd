@@ -4,10 +4,10 @@
 \alias{.docker_inspect_digest}
 \title{Inspect docker image digest value}
 \usage{
-.docker_inspect_digest(name, tag)
+.docker_inspect_digest(repository, tag)
 }
 \arguments{
-\item{name}{`character(1)`, name of the image.}
+\item{repository}{`character(1)`, repository name of the image.}
 
 \item{tag}{`character(1)`, tag for the image.}
 }

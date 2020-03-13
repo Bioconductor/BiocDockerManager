@@ -4,11 +4,11 @@
 \alias{help}
 \title{Help function to direct brower to Bioconductor dockerhub}
 \usage{
-help(name = "bioconductor/bioconductor_docker")
+help(repository = "bioconductor/bioconductor_docker")
 }
 \arguments{
-\item{name}{`character(1)`, name of image. Default image is the
-main 'bioconductor/bioconductor_docker' image.}
+\item{repository}{`character(1)`, repository name of image. Default
+image is the main 'bioconductor/bioconductor_docker' image.}
 }
 \value{
 Open a browser tab with docker repository

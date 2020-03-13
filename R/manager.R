@@ -99,7 +99,7 @@ available <-
 #'     and tracking changes when using the Docker images provided by
 #'     Bioconductor.
 #'
-#' @param name `character(1)`, name of the docker image.
+#' @param repository `character(1)`, repository of the docker image.
 #'
 #' @param tag `character(1)`, tag of the docker image.
 #'
@@ -116,9 +116,9 @@ available <-
 #'
 #' @export
 version <-
-    function(name = "bioconductor/bioconductor_docker", tag)
+    function(repository = "bioconductor/bioconductor_docker", tag)
 {
-    .docker_inspect_label(name, tag, label = "version")
+    .docker_inspect_label(repository, tag, label = "version")
 }
 
 
@@ -127,7 +127,7 @@ version <-
 #' @details The maintainer name and email provides information for who
 #'     you can contact in case the image isn't working as expected.
 #'
-#' @param name `character(1)`, name of the docker image.
+#' @param repository `character(1)`, repository of the docker image.
 #'
 #' @param tag `character(1)`, tag of the docker image.
 #'
@@ -140,9 +140,9 @@ version <-
 #' }
 #' @export
 maintainer <-
-    function(name = "bioconductor/bioconductor_docker", tag)
+    function(repository = "bioconductor/bioconductor_docker", tag)
 {
-    .docker_inspect_label(name, tag, label = "maintainer")
+    .docker_inspect_label(repository, tag, label = "maintainer")
 }
 
 
@@ -153,7 +153,7 @@ maintainer <-
 #'     local machine, in a place which the docker engine knows about,
 #'     building your local registry of docker images.
 #'
-#' @param name `character(1)`, name of the docker image.
+#' @param repository `character(1)`, repository name of the docker image.
 #'
 #' @param tag `character(1)`, tag of the docker image.
 #'
@@ -164,7 +164,7 @@ maintainer <-
 #'
 #' @examples
 #' \dontrun{
-#' BiocDockerManager::install(name = "bioconductor/bioconductor_docker",
+#' BiocDockerManager::install(repository = "bioconductor/bioconductor_docker",
 #'                            tag = "latest")
 #'
 #' }
@@ -173,42 +173,42 @@ maintainer <-
 #'
 #' @export
 install <-
-    function(name, tag, quiet = FALSE, all_tags = FALSE)
+    function(repository, tag, quiet = FALSE, all_tags = FALSE)
 {
     ## validity check
     stopifnot(
-        .is_scalar_character(name),
+        .is_scalar_character(repository),
         .is_scalar_character(tag),
         .is_scalar_logical(quiet),
         .is_scalar_logical(all_tags)
     )
 
-    .docker_pull(name, tag, quiet, all_tags)
+    .docker_pull(repository, tag, quiet, all_tags)
 }
 
 
 #' Get installed docker images
 #'
-#' @param name `character(1)`, name of image; if not given
-#'     all images will be shown.
+#' @param repository `character(1)`, repository name of image; if not
+#'     given all images will be shown.
 #'
 #' @examples
 #' \dontrun{
 #'    BiocDockerManager::installed()
 #'
-#'    BiocDockerManager::installed(name = "bioconductor/bioconductor_docker")
+#'    BiocDockerManager::installed(repository = "bioconductor/bioconductor_docker")
 #' }
 #'
 #' @return stdout of docker images on your local machine.
 #'
 #' @export
 installed <-
-    function(name)
+    function(repository)
 {
-    if (missing(name))
-        name = character(1)
+    if (missing(repository))
+        repository = character(1)
 
-    .docker_images(name)
+    .docker_images(repository)
 }
 
 #' Check if all images available are valid
@@ -217,52 +217,76 @@ installed <-
 #'     to date with the image hosted by bioconductor on the Dockerhub
 #'     organization page.
 #'
-#' @param name `character(1)`, name of the docker image.
+#' @param repository `character(1)`, repository name of the docker image.
 #'
 #' @param tag `character(1)`, tag of the docker image.
 #'
 #'
 #' @importFrom dplyr anti_join
 #' @importFrom dplyr select
+#' @importFrom dplyr bind_rows
 #'
-#' @return tibble with the name and tag of image which needs to be
+#' @return tibble with the repository and tag of image which needs to be
 #'     updated.
 #'
 #' @examples
 #' \dontrun{
-#'    BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
+#'
+#' BiocDockerManager::valid()
+#' 
+#' BiocDockerManager::valid("bioconductor/bioconductor_docker",
+#'                          tag = "devel")
 #' }
 #'
 #' @export
 valid <-
-    function(name="bioconductor/bioconductor_docker", tag="latest")
+    function(repository = "bioconductor/bioconductor_docker",
+             tag)
 {
     stopifnot(
-        .is_scalar_character(name),
-        .is_scalar_character(tag)
+        .is_scalar_character(repository),
+        missing(tag) || .is_scalar_character(tag)
     )
 
     ## Image digests from dockerhub
     hub <- .docker_image_digests()
-    ## Local image digest
-    local <- .docker_inspect_digest(name, tag)
-    to_update <- dplyr::anti_join(x = local, y = hub, by = ("repo_digest"))
 
-    message("The following bioconductor images need to be updated,")
-    select(to_update, image, tag)
+    ## Local image digest
+    if (missing(tag)) {
+        tags <- .docker_image_tags_list("bioconductor/bioconductor_docker")
+
+        local <- tibble(REPOSITORY = character(0),
+                        TAG = character(0),
+                        DIGEST = character(0))
+        
+        for (tag in tags) {
+            local <- bind_rows(
+                local,
+                .docker_inspect_digest(repository = repository, tag)
+            )
+        }
+    } else {
+        local <- .docker_inspect_digest(repository, tag)
+    }
+    
+    to_update <- dplyr::anti_join(x = local, y = hub, by = c("DIGEST"))
+
+    message("The following bioconductor images need to be updated:\n")
+
+    select(to_update, REPOSITORY, TAG)
 }
 
 #' Help function to direct brower to Bioconductor dockerhub
 #'
-#' @param name `character(1)`, name of image. Default image is the
-#'     main 'bioconductor/bioconductor_docker' image.
+#' @param repository `character(1)`, repository name of image. Default
+#'     image is the main 'bioconductor/bioconductor_docker' image.
 #'
 #' @return Open a browser tab with docker repository
 #'
 #' @export
 help <-
-    function(name = "bioconductor/bioconductor_docker")
+    function(repository = "bioconductor/bioconductor_docker")
 {
-    url <- paste0("https://hub.docker.com/r/", name)
+    url <- paste0("https://hub.docker.com/r/", repository)
     browseURL(url)
 }

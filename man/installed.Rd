@@ -4,11 +4,11 @@
 \alias{installed}
 \title{Get installed docker images}
 \usage{
-installed(name)
+installed(repository)
 }
 \arguments{
-\item{name}{`character(1)`, name of image; if not given
-all images will be shown.}
+\item{repository}{`character(1)`, repository name of image; if not
+given all images will be shown.}
 }
 \value{
 stdout of docker images on your local machine.
@@ -20,7 +20,7 @@ Get installed docker images
 \dontrun{
    BiocDockerManager::installed()
 
-   BiocDockerManager::installed(name = "bioconductor/bioconductor_docker")
+   BiocDockerManager::installed(repository = "bioconductor/bioconductor_docker")
 }
 
 }

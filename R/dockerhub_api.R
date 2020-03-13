@@ -49,7 +49,8 @@
 #'
 #' @keywords internal
 #'
-#' @param `character(1)` docker image name with organization
+#' @param image `character(1)` docker image name with organization
+#' 
 #' @return `numeric(1)` number showing how many times the image has
 #'     been downloaded
 #'
@@ -76,7 +77,7 @@
 #'
 #' @keywords internal
 #'
-#' @param `character(1)` name of organization or "username".
+#' @param organization `character(1)` name of organization or "username".
 #'
 #' @examples
 #' .docker_image_list("bioconductor")
@@ -98,6 +99,10 @@
 #'
 #' @keywords internal
 #'
+#' @param organization `character(1)` name of organization or "username".
+#'
+#' @param images `character(1)` name of image, leave as default NULL
+#'
 .docker_repository_list <-
     function(organization, images=NULL)
 {
@@ -113,42 +118,47 @@
 #' List the tags of an Image
 #'
 #' @keywords internal
+#'
+#' @param repository `character(1)` name of the repository
+#'
+#' @return list of tags for repository
+#' 
 .docker_image_tags_list <-
-    function(image)
+    function(repository)
 {
-    stopifnot(.is_scalar_character(image))
+    stopifnot(.is_scalar_character(repository))
 
-    tags_pages <- .docker_get(paste(image, "tags", sep="/"))
+    tags_pages <- .docker_get(paste(repository, "tags", sep="/"))
     vapply(tags_pages$results, `[[`, character(1), "name")
 }
 
 
 #' Get docker image description
 #'
-#' @param `character(1)` image name with organization name
+#' @param repository `character(1)` repository name
 #'
 #' @keywords internal
 #'
 .docker_image_description <-
-    function(image)
+    function(repository)
 {
-    stopifnot(.is_scalar_character(image))
+    stopifnot(.is_scalar_character(repository))
 
-    trimws(.docker_get(image)$description)
+    trimws(.docker_get(repository)$description)
 }
 
 
 #' Get all the docker image digest values for the image name provided
 #'
-#' @param `character(1)` image name with organization name
+#' @param repository `character(1)` image name with organization name
 #'
 #' @keywords internal
 #'
 .docker_image_digests <-
-    function(image = "bioconductor/bioconductor_docker")
+    function(repository = "bioconductor/bioconductor_docker")
 {
     ## query
-    tags <- .docker_get(paste(image, "tags", sep="/"))
+    tags <- .docker_get(paste(repository, "tags", sep="/"))
 
     ## tag names
     tag <- vapply(tags$results, `[[`, character(1), "name")
@@ -158,8 +168,7 @@
     digest <- vapply(images, `[[`,character(1), "digest")
 
     ## return tibble
-    tibble(image = image,
-           tag = tag,
-           ## last_updated = last_updated,
-           repo_digest = digest)
+    tibble(REPOSITORY = repository,
+           TAG = tag,
+           DIGEST = digest)
 }

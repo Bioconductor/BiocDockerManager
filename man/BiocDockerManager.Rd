@@ -5,9 +5,8 @@
 \alias{BiocDockerManager}
 \title{BiocDockerManager: Manage Bioconductor docker images.}
 \description{
-A convenient package to install images, update images
- and find which Bioconductor based docker images are 
- available.
+A convenient package to install images, update images and find
+which Bioconductor based docker images are available.
 }
 \section{BiocDockerManager functions}{
 
@@ -17,6 +16,8 @@ available()
 installed()
 
 install()
+
+mainatainer()
 
 version()
 

@@ -11,6 +11,9 @@
 
 \item{args}{arguments for command line tool in a character vector}
 }
+\value{
+invisible
+}
 \description{
 This function has a tryCatch block to show the error message
 when the wrong

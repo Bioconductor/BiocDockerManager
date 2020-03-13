@@ -6,8 +6,10 @@
 #' @keywords internal
 #'
 #' @param cmd command line tool
+#'
 #' @param args arguments for command line tool in a character vector
 #'
+#' @return invisible
 .FUN <- function(cmd, args, stdout = FALSE) {
     result <- system2(cmd, args,
                       if (stdout) stdout = stdout)
@@ -41,11 +43,14 @@
 #'
 #' @keywords internal
 #'
-#' @param name `character(1)`, name of the image.
-#' @param tag `character(1)`, name of the tag for the image. 'latest' is
+#' @param repository `character(1)`, repository name of the image.
+#'
+#' @param tag `character(1)`, repository of the tag for the image. 'latest' is
 #'             default.
+#'
 #' @param quiet `logical(1)`, status of download is not displayed if TRUE.
-#' @param all_tags `logical(1)`, pull all the tags of the image name.
+#'
+#' @param all_tags `logical(1)`, pull all the tags of the image repository.
 #'
 #' @return exit status of `docker_pull()` command.
 #'
@@ -60,25 +65,24 @@
 #'
 #' .docker_pull("bioconductor/bioconductor_docker", quiet=TRUE)
 #' }
-.docker_pull <- function(name, tag = "latest",
+.docker_pull <- function(repository, tag = "latest",
                         quiet = FALSE, all_tags=FALSE)
 {
     stopifnot(
-        !is.na(name), length(name) == 1L,
+        !is.na(repository), length(repository) == 1L,
         .is_scalar_logical(quiet),
         .is_scalar_logical(all_tags)
     )
 
-    ## FIXME: This needs to be corrected.
     ## build command
     cmd <- c("pull",
              if (quiet) "--quiet",
-             paste0(name, if(!is.na(tag)) paste0(":", tag)))
+             paste0(repository, if(!is.na(tag)) paste0(":", tag)))
 
     if (all_tags) {
         cmd <- c("pull",
                  if (quiet) "--quiet",
-                 "--all-tags", name)
+                 "--all-tags", repository)
     }
 
     .docker_do(cmd)
@@ -89,9 +93,12 @@
 #'
 #' @keywords internal
 #'
-#' @param name `character(1)`, name of the image.
+#' @param repository `character(1)`, repository name of the image.
+#'
 #' @param quiet `logical(1)`, output shows only IMAGE ID's if TRUE.
+#'
 #' @return tibble with the docker images
+#'
 #' @importFrom readr read_table
 #'
 #' @examples
@@ -104,12 +111,13 @@
 #'     .docker_images("bioconductor/bioconductor_docker", quiet = TRUE)
 #' }
 .docker_images <-
-    function(name)
+    function(repository)
 {
     stopifnot(
-        .is_character_0_or_1(name, zchar=TRUE)
+        .is_character_0_or_1(repository, zchar=TRUE)
     )
-    cmd <- c("images", name)
+
+    cmd <- c("images", repository)
     res <- .docker_do(cmd, stdout = TRUE)
     read_table(res)
 }
@@ -119,16 +127,16 @@
 #'
 #' @keywords internal
 #'
-#' @param name `character(1)`, name of the image.
+#' @param repository `character(1)`, repository name of the image.
 #'
 #' @param tag `character(1)`, tag for the image.
 #'
-#' @param label `character(1)` label name from the list - "name",
+#' @param label `character(1)` label repository from the list - "repository",
 #'     "description", "version", "url", "maintainer",
 #'     "license","vendor"
 #'
 .docker_inspect_label <-
-    function(name, tag,
+    function(repository, tag,
              label = c("name", "description",
                        "version", "url",
                        "maintainer", "license","vendor")
@@ -137,7 +145,7 @@
     label <- match.arg(label)
 
     stopifnot(
-        .is_scalar_character(name),
+        .is_scalar_character(repository),
         missing(tag) || .is_scalar_character(tag),
         .is_scalar_character(label)
     )
@@ -145,7 +153,7 @@
     cmd <- c("inspect",
              "-f",
              sprintf("'{{.Config.Labels.%s}}'", label),
-             paste0(name, if(!missing(tag)) paste0(":", tag)))
+             paste0(repository, if(!missing(tag)) paste0(":", tag)))
 
     .docker_do(cmd, stdout = TRUE)
 }
@@ -155,31 +163,31 @@
 #'
 #' @keywords internal
 #'
-#' @param name `character(1)`, name of the image.
+#' @param repository `character(1)`, repository name of the image.
 #'
 #' @param tag `character(1)`, tag for the image.
 #'
 .docker_inspect_digest <-
-    function(name, tag)
+    function(repository, tag)
 {
     stopifnot(
-        .is_scalar_character(name),
+        .is_scalar_character(repository),
         missing(tag) || .is_scalar_character(tag)
     )
 
     if(missing(tag))
-        tag = "latest"
+        tag <- "latest"
 
     cmd <- c("inspect",
-             "-f", "'{{.RepoDigests}}={{.Created}}'",
-             paste(name, tag, sep=":"))
+             "-f", "'{{.RepoDigests}}'",
+             paste(repository, tag, sep=":"))
 
     res <- .docker_do(cmd, stdout = TRUE)
     digest <- strsplit(res, split = "=")[[1]][1]
 
     tibble(
-        image = name,
-        tag = tag,
-        repo_digest = substr(digest, nchar(name) + 3, nchar(digest) - 1)
+        REPOSITORY = repository,
+        TAG = tag,
+        DIGEST = substr(digest, nchar(repository) + 3, nchar(digest) - 1)
     )
 }

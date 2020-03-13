@@ -6,6 +6,11 @@
 \usage{
 .docker_repository_list(organization, images = NULL)
 }
+\arguments{
+\item{organization}{`character(1)` name of organization or "username".}
+
+\item{images}{`character(1)` name of image, leave as default NULL}
+}
 \description{
 Get list of repositories, i.e, organization/image_name
 }

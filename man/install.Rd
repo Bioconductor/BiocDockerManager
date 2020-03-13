@@ -4,10 +4,10 @@
 \alias{install}
 \title{Install a docker image on your local machine}
 \usage{
-install(name, tag, quiet = FALSE, all_tags = FALSE)
+install(repository, tag, quiet = FALSE, all_tags = FALSE)
 }
 \arguments{
-\item{name}{`character(1)`, name of the docker image.}
+\item{repository}{`character(1)`, repository name of the docker image.}
 
 \item{tag}{`character(1)`, tag of the docker image.}
 
@@ -27,7 +27,7 @@ The function works similar to the 'docker pull'
 }
 \examples{
 \dontrun{
-BiocDockerManager::install(name = "bioconductor/bioconductor_docker",
+BiocDockerManager::install(repository = "bioconductor/bioconductor_docker",
                            tag = "latest")
 
 }

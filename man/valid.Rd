@@ -4,15 +4,15 @@
 \alias{valid}
 \title{Check if all images available are valid}
 \usage{
-valid(name = "bioconductor/bioconductor_docker", tag = "latest")
+valid(repository = "bioconductor/bioconductor_docker", tag)
 }
 \arguments{
-\item{name}{`character(1)`, name of the docker image.}
+\item{repository}{`character(1)`, repository name of the docker image.}
 
 \item{tag}{`character(1)`, tag of the docker image.}
 }
 \value{
-tibble with the name and tag of image which needs to be
+tibble with the repository and tag of image which needs to be
     updated.
 }
 \description{
