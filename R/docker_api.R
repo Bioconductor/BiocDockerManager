@@ -85,7 +85,7 @@
                  "--all-tags", repository)
     }
 
-    .docker_do(cmd)
+    .docker_do(cmd, stdout=TRUE)
 }
 
 

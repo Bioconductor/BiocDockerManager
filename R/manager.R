@@ -175,10 +175,19 @@ maintainer <-
 install <-
     function(repository, tag, quiet = FALSE, all_tags = FALSE)
 {
+    ## TODO:
+    ## tag or all_tags = TRUE
+    if (missing(tag) && !all_tags) {
+        tag = "latest"
+    }
+
+    if (all_tags) {
+        tag = NA_character_
+    }
+
     ## validity check
     stopifnot(
         .is_scalar_character(repository),
-        .is_scalar_character(tag),
         .is_scalar_logical(quiet),
         .is_scalar_logical(all_tags)
     )
