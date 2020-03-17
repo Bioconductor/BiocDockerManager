@@ -18,7 +18,7 @@
 #' @return `tibble` of available images
 #'
 #' @examples
-#' \dontrun{
+#'
 #' res <- available()
 #'
 #' res <- available("bioconductor_docker")
@@ -26,9 +26,9 @@
 #' res <- available(pattern = "rstudio", organization = "rocker")
 #'
 #' res <- available(deprecated = TRUE)
-#' }
+#' 
 #'
-#' @importFrom tibble tibble
+#' @importFrom dplyr tibble
 #'
 #' @export
 available <-
@@ -42,7 +42,6 @@ available <-
         .is_scalar_character(organization),
         .is_scalar_logical(deprecated)
     )
-
     ## Get images
     images <- .docker_image_list(organization)
 
@@ -50,9 +49,8 @@ available <-
         filter <- grep(pattern, images, value = FALSE, ignore.case = TRUE)
         images <- images[filter]
     }
-
+    
     repositories <- .docker_repository_list(organization, images)
-
     ## Get descriptions
     image_descriptions <- vapply(repositories,
                                  .docker_image_description,
@@ -64,28 +62,20 @@ available <-
         repositories <- repositories[include]
         images <- images[include]
     }
-
     ## get tags in a list
     tags <- lapply(repositories, .docker_image_tags_list)
     image_tags <- vapply(tags, paste, character(1), collapse=", ")
     image_tags[!nzchar(image_tags)] <- NA_character_
     image_descriptions[!nzchar(image_descriptions)] <- NA_character_
-
     ## Get pull count
-    pull_count <- vapply(
-        repositories,
-        .docker_image_pull_count,
-        numeric(1)
-    )
-
+    pull_count <- vapply(repositories, .docker_image_pull_count,
+                         numeric(1))
     ## result
-    tibble(
-        IMAGE = images,
-        DESCRIPTION = image_descriptions,
-        TAGS = trimws(image_tags),
-        REPOSITORY = repositories,
-        DOWNLOADS = pull_count
-    )
+    tibble(IMAGE = images,
+           DESCRIPTION = image_descriptions,
+           TAGS = trimws(image_tags),
+           REPOSITORY = repositories,
+           DOWNLOADS = pull_count)
 }
 
 
@@ -205,7 +195,9 @@ install <-
 #' \dontrun{
 #'    BiocDockerManager::installed()
 #'
-#'    BiocDockerManager::installed(repository = "bioconductor/bioconductor_docker")
+#'    BiocDockerManager::installed(
+#'        repository = "bioconductor/bioconductor_docker"
+#'    )
 #' }
 #'
 #' @return stdout of docker images on your local machine.
@@ -262,7 +254,7 @@ valid <-
 
     ## Local image digest
     if (missing(tag)) {
-        tags <- .docker_image_tags_list("bioconductor/bioconductor_docker")
+        tags <- .docker_image_tags_list(repository)
 
         local <- tibble(REPOSITORY = character(0),
                         TAG = character(0),
@@ -271,19 +263,20 @@ valid <-
         for (tag in tags) {
             local <- bind_rows(
                 local,
-                .docker_inspect_digest(repository = repository, tag)
-            )
+                suppressWarnings(
+                    .docker_inspect_digest(repository = repository, tag)
+                ))
         }
     } else {
         local <- .docker_inspect_digest(repository, tag)
     }
     
     to_update <- dplyr::anti_join(x = local, y = hub, by = c("DIGEST"))
-
-    message("The following bioconductor images need to be updated:\n")
-
+    
+    message("The following bioconductor images need to be updated:")
     select(to_update, REPOSITORY, TAG)
 }
+
 
 #' Help function to direct brower to Bioconductor dockerhub
 #'

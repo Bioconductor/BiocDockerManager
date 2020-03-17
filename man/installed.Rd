@@ -20,7 +20,9 @@ Get installed docker images
 \dontrun{
    BiocDockerManager::installed()
 
-   BiocDockerManager::installed(repository = "bioconductor/bioconductor_docker")
+   BiocDockerManager::installed(
+       repository = "bioconductor/bioconductor_docker"
+   )
 }
 
 }

@@ -30,7 +30,7 @@ In the future, you might find that you need to install one or more
 additional packages. The best way to do this is to start an R session
 and evaluate commands like
 
-```{r}
+```{r, eval = FALSE}
    if (!require("BiocManager"))
       install.packages("BiocManager")
    BiocManager::install("BiocDockerManager")
@@ -42,7 +42,7 @@ supported on all platforms. Please take a look at
 
 ### Loading packages
 
-```{r}
+```{r, eval = FALSE}
 library("BiocDockerManager")
 ```
 
@@ -60,7 +60,7 @@ First we can check what Bioconductor docker images are
 "available". This returns a tibble which we can manipulate with basic
 `dplyr` functionality.
 
-```{r available, echo=TRUE}
+```{r available, echo=TRUE, eval = FALSE}
 library(dplyr)
 res <- BiocDockerManager::available()
 
@@ -76,17 +76,16 @@ res2 %>% select(IMAGE, TAGS)
 Bioconductor also has a list of images which have been recently
 deprecated,
 
-```{r deprecated, echo=TRUE}
+```{r deprecated, echo=TRUE, eval = FALSE}
 BiocDockerManager::available(deprecated=TRUE)
 ```
 
 ### Help regarding Bioconductor images
 
 The custom help function takes users to the Bioconductor Docker help
-page. This provides easy access to the help page
-should they need it. The help page contains all the information
-needed on how to start up the `bioconductor/bioconductor_docker`
-image, and use it.
+page. This provides easy access to the help page should they need
+it. The help page contains all the information needed on how to start
+up the `bioconductor/bioconductor_docker` image, and use it.
 
 ```{r, eval=FALSE}
 BiocDockerManager::help()
@@ -94,12 +93,12 @@ BiocDockerManager::help()
 
 ### Install or "pull" a docker image
 
-The `install()` function lets users download and pull new images 
-on to their machine. This function comes in handy when users are 
-trying to get a new `bioconductor_docker` image on their machine.
+The `install()` function lets users download and pull new images on to
+their machine. This function comes in handy when users are trying to
+get a new `bioconductor_docker` image on their machine.
 
-The function pulls the image from **Dockerhub** which is always
-kept upto date.
+The function pulls the image from **Dockerhub** which is always kept
+upto date.
 
 ```{r, eval = FALSE}
 BiocDockerManager::install("bioconductor/bioconductor_docker", 
@@ -108,20 +107,20 @@ BiocDockerManager::install("bioconductor/bioconductor_docker",
 
 ### Installed images on local machine
 
-This function allows the users to check which images are installed
-on their local machine. This is similar to checking with the docker
+This function allows the users to check which images are installed on
+their local machine. This is similar to checking with the docker
 command line function `docker images`.
 
 For this function to work you need to have the Docker engine running.
 
-```{r}
+```{r, eval = FALSE}
 BiocDockerManager::installed()
 ```
 
 You can also filter the list of installed images by providing the 
 `name` arguement
 
-```{r}
+```{r, eval = FALSE}
 BiocDockerManager::installed(name = "bioconductor/bioconductor_docker")
 ```
 
@@ -140,9 +139,12 @@ Bioconductor package.
 Since these functions are specific to Bioconductor Docker images,
 they will not work when given generic docker images.
 
-```{r}
+```{r, eval = FALSE}
 ## Get version for the "latest" tag bioconductor image
-BiocDockerManager::maintainer(name = "bioconductor/bioconductor_docker", tag = "latest")
+BiocDockerManager::maintainer(
+    name = "bioconductor/bioconductor_docker",
+    tag = "latest"
+)
 
 ## The above functions works the same as
 BiocDockerManager::maintainer(tag = "latest")
@@ -153,8 +155,11 @@ us the Bioconductor version number in the `x.y` coordinates, and the `.z`
 informs us the version of the Dockerfile which is used to build the
 Docker image.
 
-```{r}
-BiocDockerManager::version(name = "bioconductor/bioconductor_docker", tag = "latest")
+```{r, eval = FALSE}
+BiocDockerManager::version(
+    name = "bioconductor/bioconductor_docker",
+    tag = "latest"
+)
 
 ## Get image version
 BiocDockerManager::version(tag = "latest")
@@ -179,16 +184,18 @@ latest version of the Docker image.
 The function returns a tibble with the images that need to be updated.
 The tibble contains image name and tag.
 
-```{r}
-BiocDockerManager::valid(name = "bioconductor/bioconductor_docker", tag = "latest")
+```{r, eval = FALSE}
+BiocDockerManager::valid(
+    name = "bioconductor/bioconductor_docker",
+    tag = "latest")
 ```
 
 ### Dockerfile template for Bioconductor images
 
-This `use_dockerfile()` functionality is for people who want to 
+This `use_dockerfile()` functionality is for people who want to
 contribute Docker images to the Bioconductor ecosystem. The function
 has side-effects where it creates a directory and populates it with a
-**Dockerfile** and **README.md**. 
+**Dockerfile** and **README.md**.
 
 The Dockerfile has fields which are required for the submission process
 of the Docker image. 
@@ -208,7 +215,7 @@ Docker users in the form of an R package.
 
 The typical workflow would look like the following:
 
-```{r}
+```{r, eval = FALSE}
 
 BiocDockerManager::available()
 
@@ -216,12 +223,17 @@ BiocDockerManager::available()
 BiocDockerManager::install()
 ```
 
-Once some time has passed and if you are not sure if you image is upto date,
+Once some time has passed and if you are not sure if you image is upto
+date,
 
-```{r}
-BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
+```{r, eval = FALSE}
+BiocDockerManager::valid(
+    "bioconductor/bioconductor_docker",
+    tag = "devel")
 
-BiocDockerManager::install("bioconductor/bioconductor_docker", tag = "devel")
+BiocDockerManager::install(
+    "bioconductor/bioconductor_docker",
+    tag = "devel")
 ```
 
 

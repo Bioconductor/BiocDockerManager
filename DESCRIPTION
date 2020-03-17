@@ -19,8 +19,9 @@ Description: Package works analogous to BiocManager but for docker
 	     project. A convenient package to install images, update
 	     images and find which Bioconductor based docker images
 	     are available.
+biocViews: Software, Infrastructure, ThirdPartyClient
 Depends: R (>= 4.0)
-Imports: httr, whisker, readr
+Imports: httr, whisker, readr, dplyr
 Suggests:
     BiocStyle,
     knitr,

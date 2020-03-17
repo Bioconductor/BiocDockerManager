@@ -25,7 +25,11 @@ Check if the image is valid, i.e to see if the image is up
 }
 \examples{
 \dontrun{
-   BiocDockerManager::valid("bioconductor/bioconductor_docker", tag = "devel")
+
+BiocDockerManager::valid()
+
+BiocDockerManager::valid("bioconductor/bioconductor_docker",
+                         tag = "devel")
 }
 
 }
