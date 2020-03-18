@@ -16,3 +16,8 @@ Open a browser tab with docker repository
 \description{
 Help function to direct brower to Bioconductor dockerhub
 }
+\examples{
+
+BiocDockerManager::help()
+
+}

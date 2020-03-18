@@ -5,31 +5,58 @@
 \title{Use dockerfile template}
 \usage{
 use_dockerfile(
-  name,
-  person,
-  description,
-  license = "Artistic-2.0",
-  path = tempdir()
+    name,
+    person,
+    description,
+    license = "Artistic-2.0",
+    path = tempdir()
 )
 }
 \arguments{
 \item{name}{`character(1)`, name of the image.}
 
-\item{person}{`person(1)`, class person which holds information
-about persons like name, email address, and maintainer/author
-information.}
+\item{person}{`person(1)`, class person which holds
+information. Only the maintainer is listed on the LABEL
+information of the Docker image.}
+
+\item{description}{`character(1)`, description of image.}
+
+\item{license}{`character(1)`, license of image.}
 
 \item{path}{`character(1)`, parent path where folder repository
 should be created.}
 }
+\value{
+invisible
+}
 \description{
 Use dockerfile template
 }
+\details{
+The 'use_dockerfile' function is used to create new
+    dockerfiles based on the bioconductor/bioconductor_docker set
+    of images. The function provides a template for creating your
+    image.
+}
 \examples{
 
-\dontrun{
+## detailed example
+use_dockerfile(name = "custom_image",
+    person = person("Foo", "Bar",
+        email="foo@bar.com", role = c("aut", "cre")
+    ),
+    description = "My image",
+    license = "GPL",
+    path = tempdir()
+)
 
-    use_dockerfile("custom_image", tempdir())
+## minimal exmaple
+use_dockerfile("custom_image",
+    person(
+        "abc", "def",
+        email = "abc@def.com",
+        role = c("cre", "aut")
+    )
+)
 
-}
 }

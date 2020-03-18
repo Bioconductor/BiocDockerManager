@@ -16,6 +16,9 @@ generated from the download.}
 
 \item{all_tags}{`logical(1)`, pull all the tags of the image}
 }
+\value{
+invisible
+}
 \description{
 Install a docker image on your local machine
 }
@@ -26,10 +29,10 @@ The function works similar to the 'docker pull'
     building your local registry of docker images.
 }
 \examples{
-\dontrun{
-BiocDockerManager::install(repository = "bioconductor/bioconductor_docker",
-                           tag = "latest")
 
-}
+BiocDockerManager::install(
+    repository = "bioconductor/bioconductor_docker",
+    tag = "latest"
+)
 
 }

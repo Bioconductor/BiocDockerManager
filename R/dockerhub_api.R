@@ -30,9 +30,11 @@
 ## @param path_root `character(1)` query substring
 ##
 .docker_get <-
-    function(path,
-             api = "https://hub.docker.com/v2",
-             path_root = "/repositories/")
+    function(
+        path,
+        api = "https://hub.docker.com/v2",
+        path_root = "/repositories/"
+    )
 {
     stopifnot(
         .is_scalar_character(path),
@@ -50,7 +52,7 @@
 ## @keywords internal
 ##
 ## @param image `character(1)` docker image name with organization
-## 
+##
 ## @return `numeric(1)` number showing how many times the image has
 ##     been downloaded
 ##
@@ -80,11 +82,11 @@
 ## @param organization `character(1)` name of organization or "username".
 ##
 ## @examples
-## 
+##
 ## \dontrun{
 ##    .docker_image_list("bioconductor")
 ## }
-## 
+##
 ## @return `character(1)` vector of images hosted by the organization
 ##     on dockerhub.
 ##
@@ -125,7 +127,7 @@
 ## @param repository `character(1)` name of the repository
 ##
 ## @return list of tags for repository
-## 
+##
 .docker_image_tags_list <-
     function(repository)
 {
@@ -171,7 +173,9 @@
     digest <- vapply(images, `[[`,character(1), "digest")
 
     ## return tibble
-    tibble(REPOSITORY = repository,
-           TAG = tag,
-           DIGEST = digest)
+    tibble(
+        REPOSITORY = repository,
+        TAG = tag,
+        DIGEST = digest
+    )
 }

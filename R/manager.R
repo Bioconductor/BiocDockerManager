@@ -26,15 +26,16 @@
 #' res <- available(pattern = "rstudio", organization = "rocker")
 #'
 #' res <- available(deprecated = TRUE)
-#' 
+#'
 #'
 #' @importFrom dplyr tibble
 #'
 #' @export
 available <-
-    function(pattern,
-             organization = "bioconductor",
-             deprecated = FALSE)
+    function(
+        pattern, organization = "bioconductor",
+        deprecated = FALSE
+    )
 {
     ## Pattern validity check
     stopifnot(
@@ -44,17 +45,15 @@ available <-
     )
     ## Get images
     images <- .docker_image_list(organization)
-
     if (!missing(pattern)) {
         filter <- grep(pattern, images, value = FALSE, ignore.case = TRUE)
         images <- images[filter]
     }
-    
     repositories <- .docker_repository_list(organization, images)
     ## Get descriptions
-    image_descriptions <- vapply(repositories,
-                                 .docker_image_description,
-                                 character(1))
+    image_descriptions <- vapply(
+        repositories, .docker_image_description, character(1)
+    )
     ## Filter deprecated images
     if(!deprecated) {
         include <- !grepl("DEPRECATED", image_descriptions)
@@ -68,14 +67,17 @@ available <-
     image_tags[!nzchar(image_tags)] <- NA_character_
     image_descriptions[!nzchar(image_descriptions)] <- NA_character_
     ## Get pull count
-    pull_count <- vapply(repositories, .docker_image_pull_count,
-                         numeric(1))
+    pull_count <- vapply(
+        repositories, .docker_image_pull_count,numeric(1)
+    )
     ## result
-    tibble(IMAGE = images,
-           DESCRIPTION = image_descriptions,
-           TAGS = trimws(image_tags),
-           REPOSITORY = repositories,
-           DOWNLOADS = pull_count)
+    tibble(
+        IMAGE = images,
+        DESCRIPTION = image_descriptions,
+        TAGS = trimws(image_tags),
+        REPOSITORY = repositories,
+        DOWNLOADS = pull_count
+    )
 }
 
 
@@ -96,13 +98,13 @@ available <-
 #' @return `character` vector representing the version number.
 #'
 #' @examples
-#' \dontrun{
-#' BiocDockerManager::version("bioconductor/bioconductor_docker",
-#'                                tag = "latest")
+#' BiocDockerManager::version(
+#'     "bioconductor/bioconductor_docker",
+#'     tag = "latest")
 #'
-#' BiocDockerManager::version("bioconductor/bioconductor_docker",
-#'                                tag = "devel")
-#' }
+#' BiocDockerManager::version(
+#'     "bioconductor/bioconductor_docker",
+#'     tag = "devel")
 #'
 #' @export
 version <-
@@ -124,10 +126,12 @@ version <-
 #' @return `character` vector representing the maintainer.
 #'
 #' @examples
-#' \dontrun{
-#' BiocDockerManager::maintainer("bioconductor/bioconductor_docker",
-#'                                tag = "latest")
-#' }
+#'
+#' BiocDockerManager::maintainer(
+#'     "bioconductor/bioconductor_docker",
+#'     tag = "latest"
+#' )
+#'
 #' @export
 maintainer <-
     function(repository = "bioconductor/bioconductor_docker", tag)
@@ -153,13 +157,13 @@ maintainer <-
 #' @param all_tags `logical(1)`, pull all the tags of the image
 #'
 #' @examples
-#' \dontrun{
-#' BiocDockerManager::install(repository = "bioconductor/bioconductor_docker",
-#'                            tag = "latest")
 #'
-#' }
+#' BiocDockerManager::install(
+#'     repository = "bioconductor/bioconductor_docker",
+#'     tag = "latest"
+#' )
 #'
-#' @return NULL
+#' @return invisible
 #'
 #' @export
 install <-
@@ -192,13 +196,12 @@ install <-
 #'     given all images will be shown.
 #'
 #' @examples
-#' \dontrun{
-#'    BiocDockerManager::installed()
 #'
-#'    BiocDockerManager::installed(
-#'        repository = "bioconductor/bioconductor_docker"
-#'    )
-#' }
+#' BiocDockerManager::installed()
+#'
+#' BiocDockerManager::installed(
+#'     repository = "bioconductor/bioconductor_docker"
+#' )
 #'
 #' @return stdout of docker images on your local machine.
 #'
@@ -224,25 +227,26 @@ installed <-
 #'
 #'
 #' @importFrom dplyr anti_join
-#' @importFrom dplyr select
 #' @importFrom dplyr bind_rows
 #'
-#' @return tibble with the repository and tag of image which needs to be
-#'     updated.
+#' @return tibble with the repository and tag of image which needs to
+#'     be updated.
 #'
 #' @examples
-#' \dontrun{
 #'
 #' BiocDockerManager::valid()
-#' 
-#' BiocDockerManager::valid("bioconductor/bioconductor_docker",
-#'                          tag = "devel")
-#' }
+#'
+#' BiocDockerManager::valid(
+#'     "bioconductor/bioconductor_docker",
+#'     tag = "devel"
+#' )
 #'
 #' @export
 valid <-
-    function(repository = "bioconductor/bioconductor_docker",
-             tag)
+    function(
+        repository = "bioconductor/bioconductor_docker",
+        tag
+    )
 {
     stopifnot(
         .is_scalar_character(repository),
@@ -259,7 +263,7 @@ valid <-
         local <- tibble(REPOSITORY = character(0),
                         TAG = character(0),
                         DIGEST = character(0))
-        
+
         for (tag in tags) {
             local <- bind_rows(
                 local,
@@ -270,11 +274,11 @@ valid <-
     } else {
         local <- .docker_inspect_digest(repository, tag)
     }
-    
+
     to_update <- dplyr::anti_join(x = local, y = hub, by = c("DIGEST"))
-    
+
     message("The following bioconductor images need to be updated:")
-    select(to_update, REPOSITORY, TAG)
+    to_update[,c("REPOSITORY", "TAG")]
 }
 
 
@@ -286,6 +290,10 @@ valid <-
 #' @importFrom utils browseURL
 #'
 #' @return Open a browser tab with docker repository
+#'
+#' @examples
+#'
+#' BiocDockerManager::help()
 #'
 #' @export
 help <-

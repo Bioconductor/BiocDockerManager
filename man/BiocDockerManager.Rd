@@ -17,7 +17,7 @@ installed()
 
 install()
 
-mainatainer()
+maintainer()
 
 version()
 

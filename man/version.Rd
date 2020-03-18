@@ -27,12 +27,12 @@ The version of the images provided by Bioconductor are
     Bioconductor.
 }
 \examples{
-\dontrun{
-BiocDockerManager::version("bioconductor/bioconductor_docker",
-                               tag = "latest")
+BiocDockerManager::version(
+    "bioconductor/bioconductor_docker",
+    tag = "latest")
 
-BiocDockerManager::version("bioconductor/bioconductor_docker",
-                               tag = "devel")
-}
+BiocDockerManager::version(
+    "bioconductor/bioconductor_docker",
+    tag = "devel")
 
 }

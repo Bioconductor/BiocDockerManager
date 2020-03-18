@@ -22,8 +22,10 @@ The maintainer name and email provides information for who
     you can contact in case the image isn't working as expected.
 }
 \examples{
-\dontrun{
-BiocDockerManager::maintainer("bioconductor/bioconductor_docker",
-                               tag = "latest")
-}
+
+BiocDockerManager::maintainer(
+    "bioconductor/bioconductor_docker",
+    tag = "latest"
+)
+
 }

@@ -11,7 +11,7 @@
 #'
 #' install()
 #'
-#' mainatainer()
+#' maintainer()
 #'
 #' version()
 #'

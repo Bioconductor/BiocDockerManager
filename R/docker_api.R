@@ -10,9 +10,11 @@
 .FUN <-
     function(cmd, args, stdout = FALSE, stderr = FALSE)
 {
-    result <- system2(cmd, args,
-                      if (stdout) {stdout = stdout},
-                      if (stderr) {stderr = stderr})
+    result <- system2(
+        cmd, args,
+        if (stdout) stdout = stdout,
+        if (stderr) stderr = stderr
+    )
     if(stdout) {
         return(result)
     }
@@ -81,7 +83,7 @@
         if (quiet) "--quiet",
         paste0(repository, if(!is.na(tag)) paste0(":", tag))
     )
-    
+
     if (all_tags) {
         cmd <- c(
             "pull",
@@ -137,17 +139,17 @@
 ##
 ## @param tag `character(1)`, tag for the image.
 ##
-## @param label `character(1)` label repository from the 
+## @param label `character(1)` label repository from the
 ## list - "repository", "description", "version", "url",
 ## "maintainer", "license","vendor"
 ##
 .docker_inspect_label <-
-    function(repository,
-             tag,
-             label = c("name", "description",
-                       "version", "url",
-                       "maintainer", "license",
-                       "vendor"))
+    function(
+        repository, tag,
+        label = c(
+            "name", "description", "version", "url",
+            "maintainer", "license","vendor")
+    )
 {
     label <- match.arg(label)
 
@@ -157,10 +159,11 @@
         .is_scalar_character(label)
     )
 
-    cmd <- c("inspect",
-             "-f",
-             sprintf("'{{.Config.Labels.%s}}'", label),
-             paste0(repository, if(!missing(tag)) paste0(":", tag)))
+    cmd <- c(
+        "inspect",
+        "-f",
+        sprintf("'{{.Config.Labels.%s}}'", label),
+        paste0(repository, if(!missing(tag)) paste0(":", tag)))
 
     .docker_do(cmd, stdout = TRUE)
 }
@@ -185,9 +188,10 @@
     if(missing(tag))
         tag <- "latest"
 
-    cmd <- c("inspect",
-             "-f", "'{{.RepoDigests}}'",
-             paste(repository, tag, sep=":"))
+    cmd <- c(
+        "inspect",
+        "-f", "'{{.RepoDigests}}'",
+        paste(repository, tag, sep=":"))
 
     res <- .docker_do(cmd, stdout = TRUE, stderr = FALSE)
     digest <- strsplit(res, split = "=")[[1]][1]
@@ -198,4 +202,3 @@
         DIGEST = substr(digest, nchar(repository) + 3, nchar(digest) - 1)
     )
 }
-

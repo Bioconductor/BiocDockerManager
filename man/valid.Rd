@@ -12,8 +12,8 @@ valid(repository = "bioconductor/bioconductor_docker", tag)
 \item{tag}{`character(1)`, tag of the docker image.}
 }
 \value{
-tibble with the repository and tag of image which needs to be
-    updated.
+tibble with the repository and tag of image which needs to
+    be updated.
 }
 \description{
 Check if all images available are valid
@@ -24,12 +24,12 @@ Check if the image is valid, i.e to see if the image is up
     organization page.
 }
 \examples{
-\dontrun{
 
 BiocDockerManager::valid()
 
-BiocDockerManager::valid("bioconductor/bioconductor_docker",
-                         tag = "devel")
-}
+BiocDockerManager::valid(
+    "bioconductor/bioconductor_docker",
+    tag = "devel"
+)
 
 }

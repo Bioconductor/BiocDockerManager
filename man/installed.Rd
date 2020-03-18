@@ -17,12 +17,11 @@ stdout of docker images on your local machine.
 Get installed docker images
 }
 \examples{
-\dontrun{
-   BiocDockerManager::installed()
 
-   BiocDockerManager::installed(
-       repository = "bioconductor/bioconductor_docker"
-   )
-}
+BiocDockerManager::installed()
+
+BiocDockerManager::installed(
+    repository = "bioconductor/bioconductor_docker"
+)
 
 }
