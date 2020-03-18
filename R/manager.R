@@ -283,6 +283,8 @@ valid <-
 #' @param repository `character(1)`, repository name of image. Default
 #'     image is the main 'bioconductor/bioconductor_docker' image.
 #'
+#' @importFrom utils browseURL
+#'
 #' @return Open a browser tab with docker repository
 #'
 #' @export

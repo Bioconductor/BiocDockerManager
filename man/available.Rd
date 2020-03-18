@@ -30,7 +30,7 @@ Return a tibble of all the available docker images in an
     organization in dockerhub.
 }
 \examples{
-\dontrun{
+
 res <- available()
 
 res <- available("bioconductor_docker")
@@ -38,6 +38,6 @@ res <- available("bioconductor_docker")
 res <- available(pattern = "rstudio", organization = "rocker")
 
 res <- available(deprecated = TRUE)
-}
+
 
 }
