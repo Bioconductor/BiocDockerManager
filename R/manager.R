@@ -98,6 +98,7 @@ available <-
 #' @return `character` vector representing the version number.
 #'
 #' @examples
+#' \donttest{
 #' BiocDockerManager::version(
 #'     "bioconductor/bioconductor_docker",
 #'     tag = "latest")
@@ -105,7 +106,7 @@ available <-
 #' BiocDockerManager::version(
 #'     "bioconductor/bioconductor_docker",
 #'     tag = "devel")
-#'
+#' }
 #' @export
 version <-
     function(repository = "bioconductor/bioconductor_docker", tag)
@@ -126,12 +127,12 @@ version <-
 #' @return `character` vector representing the maintainer.
 #'
 #' @examples
-#'
+#' \donttest{
 #' BiocDockerManager::maintainer(
 #'     "bioconductor/bioconductor_docker",
 #'     tag = "latest"
 #' )
-#'
+#' }
 #' @export
 maintainer <-
     function(repository = "bioconductor/bioconductor_docker", tag)
@@ -157,12 +158,12 @@ maintainer <-
 #' @param all_tags `logical(1)`, pull all the tags of the image
 #'
 #' @examples
-#'
+#' \donttest{
 #' BiocDockerManager::install(
 #'     repository = "bioconductor/bioconductor_docker",
 #'     tag = "latest"
 #' )
-#'
+#' }
 #' @return invisible
 #'
 #' @export
@@ -196,13 +197,13 @@ install <-
 #'     given all images will be shown.
 #'
 #' @examples
-#'
+#' \donttest{
 #' BiocDockerManager::installed()
 #'
 #' BiocDockerManager::installed(
 #'     repository = "bioconductor/bioconductor_docker"
 #' )
-#'
+#' }
 #' @return stdout of docker images on your local machine.
 #'
 #' @export
@@ -233,14 +234,14 @@ installed <-
 #'     be updated.
 #'
 #' @examples
-#'
+#' \donttest{
 #' BiocDockerManager::valid()
 #'
 #' BiocDockerManager::valid(
 #'     "bioconductor/bioconductor_docker",
 #'     tag = "devel"
 #' )
-#'
+#' }
 #' @export
 valid <-
     function(

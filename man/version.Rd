@@ -27,6 +27,7 @@ The version of the images provided by Bioconductor are
     Bioconductor.
 }
 \examples{
+\donttest{
 BiocDockerManager::version(
     "bioconductor/bioconductor_docker",
     tag = "latest")
@@ -34,5 +35,5 @@ BiocDockerManager::version(
 BiocDockerManager::version(
     "bioconductor/bioconductor_docker",
     tag = "devel")
-
+}
 }

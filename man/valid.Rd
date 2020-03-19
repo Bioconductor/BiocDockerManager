@@ -24,12 +24,12 @@ Check if the image is valid, i.e to see if the image is up
     organization page.
 }
 \examples{
-
+\donttest{
 BiocDockerManager::valid()
 
 BiocDockerManager::valid(
     "bioconductor/bioconductor_docker",
     tag = "devel"
 )
-
+}
 }

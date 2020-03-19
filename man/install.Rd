@@ -29,10 +29,10 @@ The function works similar to the 'docker pull'
     building your local registry of docker images.
 }
 \examples{
-
+\donttest{
 BiocDockerManager::install(
     repository = "bioconductor/bioconductor_docker",
     tag = "latest"
 )
-
+}
 }
