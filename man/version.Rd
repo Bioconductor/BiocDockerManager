@@ -27,13 +27,19 @@ The version of the images provided by Bioconductor are
     Bioconductor.
 }
 \examples{
-\donttest{
-BiocDockerManager::version(
-    "bioconductor/bioconductor_docker",
-    tag = "latest")
 
-BiocDockerManager::version(
-    "bioconductor/bioconductor_docker",
-    tag = "devel")
+do_it <- BiocDockerManager:::.is_docker_installed()
+
+if (do_it) {
+    BiocDockerManager::version(
+        "bioconductor/bioconductor_docker",
+        tag = "latest"
+    )
+
+    BiocDockerManager::version(
+        "bioconductor/bioconductor_docker",
+        tag = "devel"
+    )
 }
+
 }

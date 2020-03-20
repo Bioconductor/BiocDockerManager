@@ -17,11 +17,15 @@ stdout of docker images on your local machine.
 Get installed docker images
 }
 \examples{
-\donttest{
-BiocDockerManager::installed()
 
-BiocDockerManager::installed(
-    repository = "bioconductor/bioconductor_docker"
-)
+do_it <- BiocDockerManager:::.is_docker_installed()
+
+if (do_it) {
+    BiocDockerManager::installed()
+
+    BiocDockerManager::installed(
+        repository = "bioconductor/bioconductor_docker"
+    )
 }
+
 }

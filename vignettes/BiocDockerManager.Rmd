@@ -21,21 +21,6 @@ available.
 
 # Preliminaries
 
-The following code is to run the vignette even if `docker` is not
-available
-
-```{r do_it}
-check_docker_install <- function() {
-    code <- suppressWarnings(
-        system("docker --version", ignore.stderr = TRUE)
-    )
-    code
-}
-
-## execute code if the date is later than a specified day
-do_it = check_docker_install() == 0
-```
-
 ## Installation
 
 If you are reading this document and have not yet installed any
@@ -61,6 +46,21 @@ supported on all platforms. Please take a look at
 ```{r load, echo = TRUE, message=FALSE}
 library(BiocDockerManager)
 library(dplyr)
+```
+
+The following code is to run the vignette even if `docker` is not
+available
+
+```{r do_it}
+.is_docker_installed <- function() {
+    code <- suppressWarnings(
+        system("docker --version", ignore.stderr = TRUE, ignore.stdout = TRUE)
+    )
+    code == 0
+}
+
+## execute code if the date is later than a specified day
+do_it = BiocDockerManager:::.is_docker_installed()
 ```
 
 # Usage

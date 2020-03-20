@@ -21,7 +21,9 @@
 #' @examples
 #'
 #' ## detailed example
-#' use_dockerfile(name = "custom_image",
+#'
+#' use_dockerfile(
+#'     name = "custom_image",
 #'     person = person("Foo", "Bar",
 #'         email="foo@bar.com", role = c("aut", "cre")
 #'     ),

@@ -18,3 +18,11 @@
 
 .is_scalar_logical <- function(x, na.ok = FALSE)
     is.logical(x) && length(x) == 1L && (na.ok || !is.na(x))
+
+
+.is_docker_installed <- function() {
+    code <- suppressWarnings(
+        system("docker --version", ignore.stderr = TRUE, ignore.stdout = TRUE)
+    )
+    code == 0
+}

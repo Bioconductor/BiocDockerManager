@@ -39,5 +39,4 @@ res <- available(pattern = "rstudio", organization = "rocker")
 
 res <- available(deprecated = TRUE)
 
-
 }

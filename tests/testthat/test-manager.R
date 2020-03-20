@@ -2,7 +2,11 @@ context("manager functions")
 
 check_docker_install <- function() {
     code <- suppressWarnings(
-        system("docker --version", ignore.stderr = TRUE)
+        system(
+            "docker --version",
+            ignore.stderr = TRUE,
+            ignore.stdout = TRUE
+        )
     )
 
     if (code != 0) {

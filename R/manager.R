@@ -27,7 +27,6 @@
 #'
 #' res <- available(deprecated = TRUE)
 #'
-#'
 #' @importFrom dplyr tibble
 #'
 #' @export
@@ -98,15 +97,21 @@ available <-
 #' @return `character` vector representing the version number.
 #'
 #' @examples
-#' \donttest{
-#' BiocDockerManager::version(
-#'     "bioconductor/bioconductor_docker",
-#'     tag = "latest")
 #'
-#' BiocDockerManager::version(
-#'     "bioconductor/bioconductor_docker",
-#'     tag = "devel")
+#' do_it <- BiocDockerManager:::.is_docker_installed()
+#'
+#' if (do_it) {
+#'     BiocDockerManager::version(
+#'         "bioconductor/bioconductor_docker",
+#'         tag = "latest"
+#'     )
+#'
+#'     BiocDockerManager::version(
+#'         "bioconductor/bioconductor_docker",
+#'         tag = "devel"
+#'     )
 #' }
+#'
 #' @export
 version <-
     function(repository = "bioconductor/bioconductor_docker", tag)
@@ -127,12 +132,16 @@ version <-
 #' @return `character` vector representing the maintainer.
 #'
 #' @examples
-#' \donttest{
-#' BiocDockerManager::maintainer(
-#'     "bioconductor/bioconductor_docker",
-#'     tag = "latest"
-#' )
+#'
+#' do_it <- BiocDockerManager:::.is_docker_installed()
+#'
+#' if (do_it) {
+#'     BiocDockerManager::maintainer(
+#'         "bioconductor/bioconductor_docker",
+#'         tag = "latest"
+#'     )
 #' }
+#'
 #' @export
 maintainer <-
     function(repository = "bioconductor/bioconductor_docker", tag)
@@ -158,12 +167,16 @@ maintainer <-
 #' @param all_tags `logical(1)`, pull all the tags of the image
 #'
 #' @examples
-#' \donttest{
-#' BiocDockerManager::install(
-#'     repository = "bioconductor/bioconductor_docker",
-#'     tag = "latest"
-#' )
+#'
+#' do_it <- BiocDockerManager:::.is_docker_installed()
+#'
+#' if (do_it) {
+#'     BiocDockerManager::install(
+#'         repository = "bioconductor/bioconductor_docker",
+#'         tag = "latest"
+#'     )
 #' }
+#'
 #' @return invisible
 #'
 #' @export
@@ -197,13 +210,17 @@ install <-
 #'     given all images will be shown.
 #'
 #' @examples
-#' \donttest{
-#' BiocDockerManager::installed()
 #'
-#' BiocDockerManager::installed(
-#'     repository = "bioconductor/bioconductor_docker"
-#' )
+#' do_it <- BiocDockerManager:::.is_docker_installed()
+#'
+#' if (do_it) {
+#'     BiocDockerManager::installed()
+#'
+#'     BiocDockerManager::installed(
+#'         repository = "bioconductor/bioconductor_docker"
+#'     )
 #' }
+#'
 #' @return stdout of docker images on your local machine.
 #'
 #' @export
@@ -234,14 +251,19 @@ installed <-
 #'     be updated.
 #'
 #' @examples
-#' \donttest{
-#' BiocDockerManager::valid()
 #'
-#' BiocDockerManager::valid(
-#'     "bioconductor/bioconductor_docker",
-#'     tag = "devel"
-#' )
+#' do_it <- BiocDockerManager:::.is_docker_installed()
+#'
+#' if (do_it) {
+#'
+#'     BiocDockerManager::valid()
+#'
+#'     BiocDockerManager::valid(
+#'         "bioconductor/bioconductor_docker",
+#'         tag = "devel"
+#'     )
 #' }
+#'
 #' @export
 valid <-
     function(

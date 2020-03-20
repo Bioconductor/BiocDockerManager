@@ -22,10 +22,14 @@ The maintainer name and email provides information for who
     you can contact in case the image isn't working as expected.
 }
 \examples{
-\donttest{
-BiocDockerManager::maintainer(
-    "bioconductor/bioconductor_docker",
-    tag = "latest"
-)
+
+do_it <- BiocDockerManager:::.is_docker_installed()
+
+if (do_it) {
+    BiocDockerManager::maintainer(
+        "bioconductor/bioconductor_docker",
+        tag = "latest"
+    )
 }
+
 }
