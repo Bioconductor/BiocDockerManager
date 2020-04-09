@@ -1,7 +1,7 @@
 Package: BiocDockerManager
 Type: Package
 Title: Access Bioconductor docker images
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: c(
     person(
 	"Maintainer",

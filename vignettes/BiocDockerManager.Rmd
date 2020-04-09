@@ -145,7 +145,7 @@ get a new `bioconductor_docker` image on their machine.
 The function pulls the image from **Dockerhub** which is always kept
 up to date.
 
-```{r, eval = TRUE}
+```{r pull, eval = TRUE}
 if (do_it) {
     BiocDockerManager::install(
         repository = "bioconductor/bioconductor_docker",
@@ -162,7 +162,7 @@ docker command line function `docker images`.
 
 For this function to work you need to have the Docker engine running.
 
-```{r, eval = TRUE}
+```{r installed, eval = TRUE}
 if (do_it)
     BiocDockerManager::installed()
 ```
@@ -170,7 +170,7 @@ if (do_it)
 You can also filter the list of installed images by providing the
 `repository` argument
 
-```{r, eval = TRUE}
+```{r filter-installed, eval = TRUE}
 if (do_it)
     BiocDockerManager::installed(
         repository = "bioconductor/bioconductor_docker"
@@ -194,7 +194,7 @@ will not work when given generic docker images.
 NOTE: These images need to be present on your local machine before you
 can query for the LABEL.
 
-```{r, eval = TRUE}
+```{r label-maintainer, eval = TRUE}
 
 if (do_it) {
     ## Get version for the "latest" tag bioconductor image
@@ -213,7 +213,7 @@ us the Bioconductor version number in the `x.y` coordinates, and the `.z`
 informs us the version of the Dockerfile which is used to build the
 Docker image.
 
-```{r, eval = TRUE}
+```{r label-version, eval = TRUE}
 if(do_it) {
     BiocDockerManager::version(
         repository = "bioconductor/bioconductor_docker",
@@ -244,7 +244,7 @@ latest version of the Docker image.
 The function returns a tibble with the images that need to be updated.
 The tibble contains repository name and tag.
 
-```{r, eval = TRUE}
+```{r valid, eval = TRUE}
 if(do_it) {
     BiocDockerManager::valid(
         repository = "bioconductor/bioconductor_docker",
@@ -267,7 +267,7 @@ There are best practices and standards on how to contribute new docker
 images to Bioconductor. The following link has more information.
 http://bioconductor.org/help/docker/#contribute
 
-```{r, eval = FALSE}
+```{r template, eval = FALSE}
 BiocDockerManager::use_dockerfile()
 ```
 
@@ -281,7 +281,7 @@ The typical workflow would look like the following:
 First, you check the `available()` images. Then you `install()` a
 required image say **bioconductor/bioconductor_docker:devel**.
 
-```{r, eval = TRUE}
+```{r workflow-1, eval = TRUE}
 
 if (do_it) {
 
@@ -303,7 +303,7 @@ Then, `install()` an update if the validity check returns that it is
 out of date. Check the `version()` of the latest image to make sure
 you understand the consequences of updating.
 
-```{r, eval = TRUE}
+```{r workflow-2, eval = TRUE}
 if (do_it) {
 
     ## 3. Check if image is valid
