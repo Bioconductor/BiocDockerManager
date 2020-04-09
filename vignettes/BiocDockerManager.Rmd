@@ -41,6 +41,10 @@ We require the system to have the docker engine installed. It is
 supported on all platforms. Please take a look at
 [https://docs.docker.com/install/](https://docs.docker.com/install/).
 
+NOTE: For certain functions, it might be the case that you need to
+have signed into the Docker Desktop engine on your local machine as
+well. Eg: https://docs.docker.com/docker-for-mac/ 
+
 ## Loading packages
 
 ```{r load, echo = TRUE, message=FALSE}

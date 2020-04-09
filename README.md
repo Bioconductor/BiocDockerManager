@@ -9,15 +9,17 @@ available.
 
 ## Install
 
-First install the package `BiocManager`, then install
-`BiocDockerManager` in your R session
+**Preliminary Step 0**: Install Docker Desktop on your local machine,
+and sign in https://docs.docker.com/get-docker/
+
+Install the package `BiocManager`, then install `BiocDockerManager` in
+your R session
 
 ```
 if (!require("BiocManager"))
     install.packages("BiocManager")
 BiocManager::install("BiocDockerManager")
 ```
-
 
 ## Example Workflow
 
@@ -70,3 +72,7 @@ BiocDockerManager::version(
 ## Help
 
 Please read the package vignette for more help.
+
+## Acknowledgements
+
+Martin Morgan (@mtmorgan) and Kayla Morell (@Kayla-Morrell).
