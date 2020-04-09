@@ -63,7 +63,7 @@ test_that("'version()' works as expected", {
         "bioconductor/bioconductor_docker", 
         tag = "RELEASE_3_10")
 
-    expect_equal(ver, "3.10.2")
+    expect_equal(ver, "3.10.3")
 
 })
 

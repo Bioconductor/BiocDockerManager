@@ -127,7 +127,20 @@
 
     cmd <- c("images", repository)
     res <- gsub("  +", "\t", .docker_do(cmd, stdout = TRUE))
-    readr::read_tsv(res)
+    data <- tryCatch({
+        readr::read_tsv(res)
+    }, error = function(err) {
+        ## error handler picks up where error was generated
+        message("Docker image not installed.")
+        data <- tibble(
+            REPOSITORY = character(),
+            TAG = character(),
+            `IMAGE ID` = character(),
+            CREATED = character(),
+            SIZE = character()
+        )
+    })
+    data
 }
 
 
