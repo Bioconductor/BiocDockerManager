@@ -1,7 +1,7 @@
 Package: BiocDockerManager
 Type: Package
 Title: Access Bioconductor docker images
-Version: 0.99.7
+Version: 0.99.8
 Authors@R: c(
     person(
 	"Maintainer",
@@ -31,5 +31,6 @@ SystemRequirements: docker
 VignetteBuilder: knitr
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
+LazyData: false
+BugReports: https://github.com/nturaga/BiocDockerManager/issues
 RoxygenNote: 7.1.0
