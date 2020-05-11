@@ -24,7 +24,6 @@ test_that(".docker_repository_list is as expected", {
 
 test_that(".docker_image_tags_list is as expected", {
     res <- .docker_image_tags_list("bioconductor/bioconductor_docker")
-    expect_length(res, 3)
     expect_true("latest" %in% res)
     expect_true("RELEASE_3_10" %in% res)
     expect_true("devel" %in% res)
