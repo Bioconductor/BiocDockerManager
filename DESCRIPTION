@@ -1,12 +1,12 @@
 Package: BiocDockerManager
 Type: Package
 Title: Access Bioconductor docker images
-Version: 1.1.2
+Version: 1.1.3
 Authors@R: c(
     person(
-	"Maintainer",
+	"Bioconductor Package Maintainer",
 	email = "maintainer@bioconductor.org",
-	role = c("aut", "cre")
+	role = c("cre")
     ),
     person(
 	"Nitesh", "Turaga",
