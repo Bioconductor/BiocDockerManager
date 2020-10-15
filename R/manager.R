@@ -315,9 +315,11 @@ valid <-
 #' @return Open a browser tab with docker repository
 #'
 #' @examples
+#' do_it <- BiocDockerManager:::.is_docker_installed()
 #'
-#' BiocDockerManager::help()
-#'
+#' if(do_it) {
+#'     BiocDockerManager::help()
+#' }
 #' @export
 help <-
     function(repository = "bioconductor/bioconductor_docker")

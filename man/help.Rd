@@ -17,7 +17,9 @@ Open a browser tab with docker repository
 Help function to direct brower to Bioconductor dockerhub
 }
 \examples{
+do_it <- BiocDockerManager:::.is_docker_installed()
 
-BiocDockerManager::help()
-
+if(do_it) {
+    BiocDockerManager::help()
+}
 }
