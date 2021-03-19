@@ -5,11 +5,11 @@
 \title{Use dockerfile template}
 \usage{
 use_dockerfile(
-    name,
-    person,
-    description,
-    license = "Artistic-2.0",
-    path = tempdir()
+  name,
+  person,
+  description,
+  license = "Artistic-2.0",
+  path = tempdir()
 )
 }
 \arguments{

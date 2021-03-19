@@ -1,7 +1,7 @@
 Package: BiocDockerManager
 Type: Package
 Title: Access Bioconductor docker images
-Version: 1.3.0
+Version: 1.3.1
 Authors@R: c(
     person(
 	"Bioconductor Package Maintainer",
@@ -20,8 +20,8 @@ Description: Package works analogous to BiocManager but for docker
 	     images and find which Bioconductor based docker images
 	     are available.
 biocViews: Software, Infrastructure, ThirdPartyClient
-Depends: R (>= 4.0)
-Imports: httr, whisker, readr, dplyr, utils, methods
+Depends: R (>= 4.1)
+Imports: httr, whisker, readr, dplyr, utils, methods, memoise
 Suggests:
     BiocStyle,
     knitr,

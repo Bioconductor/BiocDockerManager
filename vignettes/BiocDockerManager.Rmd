@@ -92,7 +92,8 @@ First we can check what Bioconductor docker images are
 `dplyr` functionality.
 
 ```{r available1, eval=TRUE}
-BiocDockerManager::available()
+res <- BiocDockerManager::available()
+res
 ```
 
 We can use the result of `available()` to extract what we need. In the
@@ -100,8 +101,6 @@ example below, simply finding the details related to the
 `bioconductor_docker` image is shown.
 
 ```{r}
-res <- BiocDockerManager::available()
-
 res %>%
     select(IMAGE, DESCRIPTION, TAGS) %>%
     filter(IMAGE == "bioconductor_docker")
