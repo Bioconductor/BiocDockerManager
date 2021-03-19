@@ -15,7 +15,7 @@
     tryCatch({
         stop_for_status(response)
     }, error = function(e) {
-        stop("That URL doesn't exist")
+        stop("That URL doesn't exist: \n  ", conditionMessage(e))
     })
     content(response)
 }
@@ -51,7 +51,7 @@
 ##
 ## @keywords internal
 ##
-## @param image `character(1)` docker image name with organization
+## @param repository `character(1)` docker image name with organization
 ##
 ## @return `numeric(1)` number showing how many times the image has
 ##     been downloaded
@@ -63,11 +63,21 @@
 ## }
 ##
 .docker_image_pull_count <-
-    function(image)
+    function(repository)
 {
-    stopifnot(.is_scalar_character(image))
+    stopifnot(.is_scalar_character(repository))
 
-    .docker_get(image)$pull_count
+    split_repo <- unlist(strsplit(repository, "/", fixed = TRUE))
+
+    name <- split_repo[2]
+
+    organization <- split_repo[1]
+
+    full_org <- .memoised_docker_get_organization(organization)
+
+    idx <- which(name == vapply(full_org, `[[`, character(1), "name"))
+
+    full_org[[idx]]$pull_count
 }
 
 
@@ -95,9 +105,21 @@
 {
     stopifnot(.is_scalar_character(organization))
 
-    org_pages <- .docker_get(sprintf("%s/?page_size=100",organization))
-    vapply(org_pages$results, `[[`, character(1), "name")
+    full_org <- .memoised_docker_get_organization(organization)
+    vapply(full_org, `[[`, character(1), "name")
 }
+
+
+.docker_get_organization <-
+    function(organization)
+{
+    .docker_get(sprintf("%s/?page_size=150",organization))$results
+}
+
+
+#' @importFrom memoise memoise
+.memoised_docker_get_organization <-
+    memoise::memoise(.docker_get_organization)
 
 
 ## Get list of repositories, i.e, organization/image_name
@@ -120,6 +142,16 @@
 }
 
 
+.docker_image_tags <-
+    function(repository)
+{
+    .docker_get(paste(repository, "tags", sep = "/"))$results
+}
+
+#' @importFrom memoise memoise
+.memoised_docker_image_tags <-
+    memoise::memoise(.docker_image_tags)
+
 ## List the tags of an Image
 ##
 ## @keywords internal
@@ -133,8 +165,9 @@
 {
     stopifnot(.is_scalar_character(repository))
 
-    tags_pages <- .docker_get(paste(repository, "tags", sep="/"))
-    vapply(tags_pages$results, `[[`, character(1), "name")
+    tags_pages <- .memoised_docker_image_tags(repository)
+    ## tags_pages <- .docker_get(paste(repository, "tags", sep="/"))
+    vapply(tags_pages, `[[`, character(1), "name")
 }
 
 
@@ -149,7 +182,17 @@
 {
     stopifnot(.is_scalar_character(repository))
 
-    trimws(.docker_get(repository)$description)
+    split_repo <- unlist(strsplit(repository, "/", fixed = TRUE))
+
+    name <- split_repo[2]
+
+    organization <- split_repo[1]
+
+    full_org <- .memoised_docker_get_organization(organization)
+
+    idx <- which(name == vapply(full_org, `[[`, character(1), "name"))
+
+    trimws(full_org[[idx]]$description)
 }
 
 
@@ -163,13 +206,13 @@
     function(repository = "bioconductor/bioconductor_docker")
 {
     ## query
-    tags <- .docker_get(paste(repository, "tags", sep="/"))
+    tags <- .memoised_docker_image_tags(repository)
 
     ## tag names
-    tag <- vapply(tags$results, `[[`, character(1), "name")
+    tag <- vapply(tags, `[[`, character(1), "name")
 
     ## get digest SHA
-    images <- vapply(tags$results, `[[`, list(1), "images")
+    images <- vapply(tags, `[[`, list(1), "images")
     digest <- vapply(images, `[[`,character(1), "digest")
 
     ## return tibble
