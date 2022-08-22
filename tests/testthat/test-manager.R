@@ -32,7 +32,7 @@ test_that("'available()' works as expected", {
                 organization = "bioconductor", 
                 deprecated = FALSE)
     expect_true("bioconductor_docker" %in% res1$IMAGE)
-    expect_length(res1, 5)
+    expect_length(res1, 4)
     expect_length(nrow(res1), 1)
 
     ## include deprecated
