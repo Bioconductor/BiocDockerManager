@@ -188,12 +188,12 @@
 
     organization <- split_repo[1]
 
-    full_org <- .memoised_docker_get_organization(organization)
-
-    idx <- which(name == vapply(full_org, `[[`, character(1), "name"))
-
-    trimws(full_org[[idx]]$description)
+    trimws(.docker_get(repository)$description)
 }
+
+#' @importFrom memoise memoise
+.memoised_docker_image_description <- 
+    memoise::memoise(.docker_image_description)
 
 
 ## Get all the docker image digest values for the image name provided

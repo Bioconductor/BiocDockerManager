@@ -49,22 +49,31 @@ available <-
         images <- images[filter]
     }
     repositories <- .docker_repository_list(organization, images)
+    
     ## Get descriptions
-    image_descriptions <- vapply(
-        repositories, .docker_image_description, character(1)
-    )
+    ## image_descriptions <- vapply(
+    ##     repositories, .memoised_docker_image_description, character(1)
+    ## )
+    
     ## Filter deprecated images
-    if(!deprecated) {
-        include <- !grepl("DEPRECATED", image_descriptions)
-        image_descriptions <- image_descriptions[include]
+    if (!deprecated) {
+        
+        ## TODO: This is a hack, getting the description from the
+        ## dockerhub api was 'rate' limited, which was causing an
+        ## issue with the build system
+        include <- !grepl("^release|^devel|^mzr", images)
         repositories <- repositories[include]
         images <- images[include]
+        ## include <- !grepl("DEPRECATED", image_descriptions)
+        ## image_descriptions <- image_descriptions[include]
+        ## repositories <- repositories[include]
+        ## images <- images[include]
     }
     ## get tags in a list
     tags <- lapply(repositories, .docker_image_tags_list)
-    image_tags <- vapply(tags, paste, character(1), collapse=", ")
+    image_tags <- vapply(tags, paste, character(1), collapse = ", ")
     image_tags[!nzchar(image_tags)] <- NA_character_
-    image_descriptions[!nzchar(image_descriptions)] <- NA_character_
+    # image_descriptions[!nzchar(image_descriptions)] <- NA_character_
     ## Get pull count
     pull_count <- vapply(
         repositories, .docker_image_pull_count,numeric(1)
@@ -72,7 +81,7 @@ available <-
     ## result
     tibble(
         IMAGE = images,
-        DESCRIPTION = image_descriptions,
+        # DESCRIPTION = image_descriptions,
         TAGS = trimws(image_tags),
         REPOSITORY = repositories,
         DOWNLOADS = pull_count
