@@ -102,7 +102,7 @@ example below, simply finding the details related to the
 
 ```{r}
 res %>%
-    select(IMAGE, DESCRIPTION, TAGS) %>%
+    select(IMAGE, TAGS) %>%
     filter(IMAGE == "bioconductor_docker")
 ```
 
@@ -112,7 +112,7 @@ the help of the `pattern` argument.
 ```{r available2}
 res2 <- BiocDockerManager::available(pattern = "bioconductor_docker")
 
-res2 %>% select(IMAGE, DESCRIPTION, TAGS)
+res2 %>% select(IMAGE, TAGS)
 ```
 
 We can see that for the `bioconductor/bioconductor_docker` image the
@@ -123,7 +123,7 @@ deprecated. These images can be obtained in the following way.
 
 ```{r deprecated, eval = TRUE}
 BiocDockerManager::available(deprecated=TRUE) %>%
-    select(IMAGE, DESCRIPTION)
+    select(IMAGE)
 ```
 
 ## Help regarding Bioconductor images
